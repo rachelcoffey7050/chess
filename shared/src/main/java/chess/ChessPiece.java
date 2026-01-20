@@ -1,5 +1,8 @@
 package chess;
 
+import chess.movetypes.*;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -53,10 +56,21 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        ChessPosition[] positions = new ChessPosition[];
-        if (this.type == PieceType.KING) {
-
+        ArrayList<ChessMove> moves;
+        if (this.type == PieceType.PAWN) {
+          moves = PawnMove(board, myPosition);
+        } else if (this.type == PieceType.ROOK) {
+            moves = RookMove(board, myPosition);
+        } else if (this.type == PieceType.KNIGHT) {
+            moves = KnightMove(board, myPosition);
+        } else if (this.type == PieceType.BISHOP) {
+            moves = BishopMove(board, myPosition);
+        } else if (this.type == PieceType.KING) {
+            moves = KingMove(board, myPosition);
+        } else {
+            moves = QueenMove(board, myPosition);
         }
+        return moves;
     }
 
     @Override
