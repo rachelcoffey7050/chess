@@ -6,14 +6,13 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class KingMove {
-    public Collection<ChessMove> moves;
+    public ArrayList<ChessMove> moves;
 
-    public   KingMove (ChessBoard board, ChessPosition position) {
-        this.moves = new ArrayList<ChessMove>();
-        ArrayList<ChessPosition> positions = new ArrayList<ChessPosition>();
+    public KingMove(ChessBoard board, ChessPosition position) {
+        this.moves = new ArrayList<>();
+        ArrayList<ChessPosition> positions = new ArrayList<>();
         positions.add(new ChessPosition(position.getRow()-1, position.getColumn()));
         positions.add(new ChessPosition(position.getRow()+1, position.getColumn()));
         positions.add(new ChessPosition(position.getRow(), position.getColumn()-1));
@@ -23,16 +22,13 @@ public class KingMove {
                 moves.add(new ChessMove(position, p, ChessPiece.PieceType.KING));
             }
         }
+    }
 
-
+    public ArrayList<ChessMove> getMoves(){
+        return moves;
     }
 
     public static boolean inBounds(ChessPosition position) {
-        if (0 < position.getRow() && position.getRow() < 9 && position.getColumn() > 0 && position.getColumn() < 9) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return (0 < position.getRow() && position.getRow() < 9 && position.getColumn() > 0 && position.getColumn() < 9);
     }
 }

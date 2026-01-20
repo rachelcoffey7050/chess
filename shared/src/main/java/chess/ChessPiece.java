@@ -66,7 +66,8 @@ public class ChessPiece {
         } else if (this.type == PieceType.BISHOP) {
             moves = BishopMove(board, myPosition);
         } else if (this.type == PieceType.KING) {
-            moves = KingMove(board, myPosition);
+            KingMove km = new KingMove(board, myPosition);
+            moves = km.getMoves();
         } else {
             moves = QueenMove(board, myPosition);
         }
