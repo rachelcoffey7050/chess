@@ -28,11 +28,11 @@ public class PawnMove extends Moves{
 
         //attack
         ChessMove attack1 = new ChessMove(position, new ChessPosition(newRow, position.getColumn()-1), type);
-        if (board.getPiece(forward.getEndPosition()).getTeamColor()!=color && inBounds(forward.getEndPosition())){
+        if (board.getPiece(forward.getEndPosition())!=null && board.getPiece(forward.getEndPosition()).getTeamColor()!=color && inBounds(forward.getEndPosition())){
             moves.add(attack1);
         }
         ChessMove attack2 = new ChessMove(position, new ChessPosition(newRow, position.getColumn()+1), type);
-        if (board.getPiece(forward.getEndPosition()).getTeamColor()!=color && inBounds(forward.getEndPosition())){
+        if (board.getPiece(forward.getEndPosition())!=null && board.getPiece(forward.getEndPosition()).getTeamColor()!=color && inBounds(forward.getEndPosition())){
             moves.add(attack2);
         }
     }
