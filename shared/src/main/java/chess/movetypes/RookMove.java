@@ -1,15 +1,12 @@
 package chess.movetypes;
 
-import chess.ChessBoard;
-import chess.ChessMove;
-import chess.ChessPiece;
-import chess.ChessPosition;
+import chess.*;
 
 import java.util.ArrayList;
 
 public class RookMove extends Moves{
 
-    public RookMove(ChessBoard board, ChessPosition position) {
+    public RookMove(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
         this.moves = new ArrayList<>();
         boolean tracker1 = true;
         boolean tracker2 = true;
@@ -18,25 +15,25 @@ public class RookMove extends Moves{
         // I tried to make a separate function and pass in operations, but it didn't work.
         for (int i = 1; i < 8; i++) {
             ChessPosition p1 = new ChessPosition(position.getRow(), position.getColumn() + i);
-            if (tracker1 && inBounds(p1) && board.getPiece(p1) == null) {
+            if (tracker1 && inBounds(p1) && (board.getPiece(p1) == null || board.getPiece(position).getTeamColor()!=color)) {
                 this.moves.add(new ChessMove(position, p1, ChessPiece.PieceType.BISHOP));
             } else {
                 tracker1 = false;
             }
             ChessPosition p2 = new ChessPosition(position.getRow() - i, position.getColumn());
-            if (tracker2 && inBounds(p2) && board.getPiece(p2) == null) {
+            if (tracker2 && inBounds(p2) && (board.getPiece(p2) == null || board.getPiece(position).getTeamColor()!=color)) {
                 this.moves.add(new ChessMove(position, p2, ChessPiece.PieceType.BISHOP));
             } else {
                 tracker2 = false;
             }
             ChessPosition p3 = new ChessPosition(position.getRow(), position.getColumn() - i);
-            if (tracker3 && inBounds(p3) && board.getPiece(p3) == null) {
+            if (tracker3 && inBounds(p3) && (board.getPiece(p3) == null || board.getPiece(position).getTeamColor()!=color)) {
                 this.moves.add(new ChessMove(position, p3, ChessPiece.PieceType.BISHOP));
             } else {
                 tracker3 = false;
             }
             ChessPosition p4 = new ChessPosition(position.getRow() + i, position.getColumn());
-            if (tracker4 && inBounds(p4) && board.getPiece(p4) == null) {
+            if (tracker4 && inBounds(p4) && (board.getPiece(p4) == null || board.getPiece(position).getTeamColor()!=color)) {
                 this.moves.add(new ChessMove(position, p4, ChessPiece.PieceType.BISHOP));
             } else {
                 tracker4 = false;

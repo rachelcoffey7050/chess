@@ -1,16 +1,13 @@
 package chess.movetypes;
 
-import chess.ChessBoard;
-import chess.ChessMove;
-import chess.ChessPiece;
-import chess.ChessPosition;
+import chess.*;
 
 import java.util.ArrayList;
 
 public class KingMove extends Moves {
 
 
-    public KingMove(ChessBoard board, ChessPosition position) {
+    public KingMove(ChessBoard board, ChessPosition position, ChessGame.TeamColor color) {
         this.moves = new ArrayList<>();
         ArrayList<ChessPosition> positions = new ArrayList<>();
         positions.add(new ChessPosition(position.getRow()-1, position.getColumn()));
@@ -18,7 +15,7 @@ public class KingMove extends Moves {
         positions.add(new ChessPosition(position.getRow(), position.getColumn()-1));
         positions.add(new ChessPosition(position.getRow(), position.getColumn()+1));
         for (ChessPosition p: positions) {
-            if (inBounds(p) && board.getPiece(position)==null){
+            if (inBounds(p) && (board.getPiece(position)==null || board.getPiece(position).getTeamColor()!=color)){
                 moves.add(new ChessMove(position, p, ChessPiece.PieceType.KING));
             }
         }

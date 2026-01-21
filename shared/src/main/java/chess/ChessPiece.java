@@ -61,19 +61,19 @@ public class ChessPiece {
           PawnMove pm = new PawnMove(board, myPosition, this.color);
           moves = pm.getMoves();
         } else if (this.type == PieceType.ROOK) {
-            RookMove rm = new RookMove(board, myPosition);
+            RookMove rm = new RookMove(board, myPosition, this.color);
             moves = rm.getMoves();
         } else if (this.type == PieceType.KNIGHT) {
-            KnightMove km = new KnightMove(board, myPosition);
+            KnightMove km = new KnightMove(board, myPosition, this.color);
             moves = km.getMoves();
         } else if (this.type == PieceType.BISHOP) {
-            BishopMove bm = new BishopMove(board, myPosition);
+            BishopMove bm = new BishopMove(board, myPosition, this.color);
             moves = bm.getMoves();
         } else if (this.type == PieceType.KING) {
-            KingMove km = new KingMove(board, myPosition);
+            KingMove km = new KingMove(board, myPosition, this.color);
             moves = km.getMoves();
         } else {
-            QueenMove qm = new QueenMove(board, myPosition);
+            QueenMove qm = new QueenMove(board, myPosition, this.color);
             moves = qm.getMoves();
         }
         return moves;
