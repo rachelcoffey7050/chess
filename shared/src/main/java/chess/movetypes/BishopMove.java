@@ -29,13 +29,13 @@ public class BishopMove extends Moves {
             } else {
                 tracker2 = false;
             }
-            ChessPosition p3 = new ChessPosition(position.getRow() - i, position.getColumn() + i);
+            ChessPosition p3 = new ChessPosition(position.getRow() - i, position.getColumn() - i);
             if (tracker3 && inBounds(p3) && board.getPiece(p3) == null) {
                 this.moves.add(new ChessMove(position, p3, ChessPiece.PieceType.BISHOP));
             } else {
                 tracker3 = false;
             }
-            ChessPosition p4 = new ChessPosition(position.getRow() - i, position.getColumn() + i);
+            ChessPosition p4 = new ChessPosition(position.getRow() + i, position.getColumn() - i);
             if (tracker4 && inBounds(p4) && board.getPiece(p4) == null) {
                 this.moves.add(new ChessMove(position, p4, ChessPiece.PieceType.BISHOP));
             } else {

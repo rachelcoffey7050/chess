@@ -60,9 +60,11 @@ public class ChessPiece {
         if (this.type == PieceType.PAWN) {
           moves = PawnMove(board, myPosition);
         } else if (this.type == PieceType.ROOK) {
-            moves = RookMove(board, myPosition);
+            RookMove rm = new RookMove(board, myPosition);
+            moves = rm.getMoves();
         } else if (this.type == PieceType.KNIGHT) {
-            moves = KnightMove(board, myPosition);
+            KnightMove km = new KnightMove(board, myPosition);
+            moves = km.getMoves();
         } else if (this.type == PieceType.BISHOP) {
             BishopMove bm = new BishopMove(board, myPosition);
             moves = bm.getMoves();
@@ -70,7 +72,8 @@ public class ChessPiece {
             KingMove km = new KingMove(board, myPosition);
             moves = km.getMoves();
         } else {
-            moves = QueenMove(board, myPosition);
+            QueenMove qm = new QueenMove(board, myPosition);
+            moves = qm.getMoves();
         }
         return moves;
     }
