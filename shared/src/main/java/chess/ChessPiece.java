@@ -58,7 +58,8 @@ public class ChessPiece {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         ArrayList<ChessMove> moves;
         if (this.type == PieceType.PAWN) {
-          moves = PawnMove(board, myPosition);
+          PawnMove pm = new PawnMove(board, myPosition, this.color);
+          moves = pm.getMoves();
         } else if (this.type == PieceType.ROOK) {
             RookMove rm = new RookMove(board, myPosition);
             moves = rm.getMoves();
