@@ -1,4 +1,6 @@
 package chess.movetypes;
 
-public class BishopMove {
+public class BishopMove extends Moves {
+
+
 }

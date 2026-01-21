@@ -8,7 +8,7 @@ import chess.ChessPosition;
 import java.util.ArrayList;
 
 public class KingMove extends Moves {
-    public ArrayList<ChessMove> moves;
+
 
     public KingMove(ChessBoard board, ChessPosition position) {
         this.moves = new ArrayList<>();
@@ -22,8 +22,5 @@ public class KingMove extends Moves {
                 moves.add(new ChessMove(position, p, ChessPiece.PieceType.KING));
             }
         }
-    }
-    public ArrayList<ChessMove> getMoves(){
-        return moves;
     }
 }
