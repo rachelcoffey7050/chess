@@ -28,27 +28,32 @@ public class PawnMove extends Moves{
         for (ChessPiece.PieceType type : types) {
             //forward
             ChessMove forward = new ChessMove(position, new ChessPosition(newRow, position.getColumn()), type);
-            if (board.getPiece(forward.getEndPosition()) == null && inBounds(forward.getEndPosition())) {
+            if (inBounds(forward.getEndPosition()) && board.getPiece(forward.getEndPosition()) == null) {
                 moves.add(forward);
             }
 
             //attack
             ChessMove attack1 = new ChessMove(position, new ChessPosition(newRow, position.getColumn() - 1), type);
-            if (board.getPiece(attack1.getEndPosition()) != null && board.getPiece(attack1.getEndPosition()).getTeamColor() != color && inBounds(attack1.getEndPosition())) {
+            if (inBounds(attack1.getEndPosition()) && board.getPiece(attack1.getEndPosition()) != null && board.getPiece(attack1.getEndPosition()).getTeamColor() != color) {
                 moves.add(attack1);
             }
             ChessMove attack2 = new ChessMove(position, new ChessPosition(newRow, position.getColumn() + 1), type);
-            if (board.getPiece(attack2.getEndPosition()) != null && board.getPiece(attack2.getEndPosition()).getTeamColor() != color && inBounds(attack2.getEndPosition())) {
+            if (inBounds(attack2.getEndPosition()) && board.getPiece(attack2.getEndPosition()) != null && board.getPiece(attack2.getEndPosition()).getTeamColor() != color) {
                 moves.add(attack2);
             }
         }
         //first move
         if (position.getRow()==2 && board.getPiece(position).getTeamColor()== ChessGame.TeamColor.WHITE){
-            moves.add(new ChessMove(position, new ChessPosition(4, position.getColumn()), null));
+            ChessPosition firstMove = new ChessPosition(4, position.getColumn());
+            if (board.getPiece(firstMove) == null){
+                moves.add(new ChessMove(position, firstMove, null));
+            }
         }
         if (position.getRow()==7 && board.getPiece(position).getTeamColor()== ChessGame.TeamColor.BLACK){
-            moves.add(new ChessMove(position, new ChessPosition(5, position.getColumn()), null));
+            ChessPosition firstMove = new ChessPosition(5, position.getColumn());
+            if (board.getPiece(firstMove) == null) {
+                moves.add(new ChessMove(position, firstMove, null));
+            }
         }
-
     }
 }
