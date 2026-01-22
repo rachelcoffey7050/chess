@@ -51,7 +51,7 @@ public class PawnMove extends Moves{
         }
         if (position.getRow()==7 && board.getPiece(position).getTeamColor()== ChessGame.TeamColor.BLACK){
             ChessPosition firstMove = new ChessPosition(5, position.getColumn());
-            if (board.getPiece(firstMove) == null && board.getPiece(new ChessPosition(3, position.getColumn()))==null) {
+            if (board.getPiece(firstMove) == null && board.getPiece(new ChessPosition(6, position.getColumn()))==null) {
                 moves.add(new ChessMove(position, firstMove, null));
             }
         }
