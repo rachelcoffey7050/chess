@@ -18,8 +18,8 @@ public class KnightMove extends Moves {
         positions.add(new ChessPosition(position.getRow()-1, position.getColumn()-2));
         positions.add(new ChessPosition(position.getRow()-1, position.getColumn()+2));
         for (ChessPosition p: positions) {
-            if (inBounds(p) && (board.getPiece(position)==null || board.getPiece(position).getTeamColor()!=color)){
-                moves.add(new ChessMove(position, p, ChessPiece.PieceType.KING));
+            if (inBounds(p) && (board.getPiece(p)==null || board.getPiece(p).getTeamColor()!=color)){
+                moves.add(new ChessMove(position, p, null));
             }
         }
     }
