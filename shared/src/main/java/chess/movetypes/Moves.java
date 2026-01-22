@@ -14,6 +14,7 @@ public class Moves {
     }
 
     public ArrayList<ChessMove> getMoves(){
+
         return moves;
     }
 }
