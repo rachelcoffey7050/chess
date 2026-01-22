@@ -50,6 +50,10 @@ public class QueenMove extends Moves {
                 tracker4 = false;
             }
         }
+        tracker1 = true;
+        tracker2 = true;
+        tracker3 = true;
+        tracker4 = true;
         for (int i = 1; i < 8; i++) {
             ChessPosition p1 = new ChessPosition(position.getRow() + i, position.getColumn() + i);
             if (tracker1 && inBounds(p1) && (board.getPiece(p1) == null || board.getPiece(p1).getTeamColor()!=color)) {
