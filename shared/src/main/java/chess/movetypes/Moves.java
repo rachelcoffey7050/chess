@@ -5,7 +5,7 @@ import chess.ChessPosition;
 
 import java.util.ArrayList;
 
-public class Moves {
+public abstract class Moves {
 
     public ArrayList<ChessMove> moves;
 

@@ -14,16 +14,7 @@ public class PawnMove extends Moves{
             newRow = position.getRow()+1;
         } else {newRow = position.getRow()-1;}
 
-        //promotion
-        ArrayList<ChessPiece.PieceType> types = new ArrayList<>();
-        if (newRow==1 || newRow==8) {
-            types.add(ChessPiece.PieceType.QUEEN);
-            types.add(ChessPiece.PieceType.BISHOP);
-            types.add(ChessPiece.PieceType.ROOK);
-            types.add(ChessPiece.PieceType.KNIGHT);
-        }
-        else {types.add(null);}
-
+        ArrayList<ChessPiece.PieceType> types = getPromotion(newRow);
 
         for (ChessPiece.PieceType type : types) {
             //forward
@@ -55,5 +46,19 @@ public class PawnMove extends Moves{
                 moves.add(new ChessMove(position, firstMove, null));
             }
         }
+    }
+
+
+    public ArrayList<ChessPiece.PieceType> getPromotion(int newRow){
+        //promotion
+        ArrayList<ChessPiece.PieceType> types = new ArrayList<>();
+        if (newRow==1 || newRow==8) {
+            types.add(ChessPiece.PieceType.QUEEN);
+            types.add(ChessPiece.PieceType.BISHOP);
+            types.add(ChessPiece.PieceType.ROOK);
+            types.add(ChessPiece.PieceType.KNIGHT);
+        }
+        else {types.add(null);}
+        return types;
     }
 }
