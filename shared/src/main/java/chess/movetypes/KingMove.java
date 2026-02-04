@@ -22,9 +22,6 @@ public class KingMove extends Moves {
             if (inBounds(p) && (board.getPiece(p)==null || board.getPiece(p).getTeamColor()!=color)){
                 moves.add(new ChessMove(position, p, null));
             }
-//            else {
-//                System.out.printf( "inBounds=%b, piece=%s, teamColor=%s%n", inBounds(p), board.getPiece(position), board.getPiece(position) == null ? "null" : board.getPiece(position).getTeamColor() );
-//            }
         }
     }
 }
