@@ -52,23 +52,29 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece currentPiece = this.board.getPiece(startPosition);
         var moves = currentPiece.pieceMoves(this.board, startPosition);
-        ChessBoard unchangedBoard = new ChessBoard(this.board);
         for (ChessMove move : moves) {
-            try{
-                this.makeMove(move);
+                this.makeTemporaryMove(move);
                 if (isInCheck(this.teamTurn)){
                     moves.remove(move);
                 }
-                this.board = unchangedBoard;
-            }
-            catch (chess.InvalidMoveException e) {
-                moves.remove(move);
-            }
+                this.reverseMove(move);
         }
         if (moves.isEmpty()){
             return null;
         }
         return moves;
+    }
+
+    private void makeTemporaryMove(ChessMove move) {
+        ChessPosition currentPosition = move.getStartPosition();
+        this.board.addPiece(move.getEndPosition(), board.getPiece(currentPosition));
+        this.board.addPiece(currentPosition, null);
+    }
+
+    private void reverseMove(ChessMove move) {
+        ChessPosition currentPosition = move.getEndPosition();
+        this.board.addPiece(move.getStartPosition(), board.getPiece(currentPosition));
+        this.board.addPiece(currentPosition, null);
     }
 
     /**
@@ -78,7 +84,11 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPosition currentPosition = move.getStartPosition();
+        if (validMoves(currentPosition).contains(move)){
+            this.board.addPiece(move.getEndPosition(), board.getPiece(currentPosition));
+            this.board.addPiece(currentPosition, null);
+        }
     }
 
     /**
