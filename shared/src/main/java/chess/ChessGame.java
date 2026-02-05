@@ -51,9 +51,14 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece currentPiece = this.board.getPiece(startPosition);
-        var moves = currentPiece.pieceMoves();
+        var moves = currentPiece.pieceMoves(this.board, startPosition);
+        ChessBoard unchangedBoard =
         for (ChessMove move : moves) {
-            if
+            try{
+                this.makeMove(move);
+                isInCheck(this.teamTurn);
+            }
+            catch (chess.InvalidMoveException e) {}
         }
     }
 
