@@ -52,14 +52,23 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece currentPiece = this.board.getPiece(startPosition);
         var moves = currentPiece.pieceMoves(this.board, startPosition);
-        ChessBoard unchangedBoard =
+        ChessBoard unchangedBoard = new ChessBoard(this.board);
         for (ChessMove move : moves) {
             try{
                 this.makeMove(move);
-                isInCheck(this.teamTurn);
+                if (isInCheck(this.teamTurn)){
+                    moves.remove(move);
+                }
+                this.board = unchangedBoard;
             }
-            catch (chess.InvalidMoveException e) {}
+            catch (chess.InvalidMoveException e) {
+                moves.remove(move);
+            }
         }
+        if (moves.isEmpty()){
+            return null;
+        }
+        return moves;
     }
 
     /**
