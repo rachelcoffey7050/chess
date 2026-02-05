@@ -62,9 +62,6 @@ public class ChessGame {
                 }
                 this.reverseMove(move, captured);
         }
-        if (newMoves.isEmpty()){
-            return null;
-        }
         return newMoves;
     }
 
@@ -94,7 +91,7 @@ public class ChessGame {
         ChessPiece currentPiece = board.getPiece(currentPosition);
         if (currentPiece!=null && currentPiece.getTeamColor()==teamTurn) {
             var moves = validMoves(currentPosition);
-            if (moves!=null && moves.contains(move)) {
+            if (!moves.isEmpty() && moves.contains(move)) {
                 if (move.getPromotionPiece()!=null){
                     this.board.addPiece(move.getEndPosition(), new ChessPiece(currentPiece.getTeamColor(), move.getPromotionPiece()));
                 }
@@ -161,10 +158,7 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        ChessPosition kingSpot = findKing(teamColor);
-        System.out.println("Is in check: " + this.isInCheck(teamColor));
-        System.out.println("Has no valid moves: " + (validMoves(kingSpot)==null));
-        return this.isInCheck(teamColor) && validMoves(kingSpot) == null;
+        return this.isInCheck(teamColor) && cantMakeMoves(teamColor);
     }
 
     private ChessPosition findKing(TeamColor teamColor){
@@ -187,19 +181,23 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        return cantMakeMoves(teamColor) && !isInCheckmate(teamColor);
+    }
+
+    private boolean cantMakeMoves(TeamColor teamColor){
         for (int r = 1; r < 9; r++) {
             for (int c = 1; c < 9; c++) {
                 ChessPosition position = new ChessPosition(r, c);
                 ChessPiece piece = this.board.getPiece(position);
                 if (piece!=null) {
                     var moves = validMoves(position);
-                    if (piece.getTeamColor() == teamColor && moves != null) {
+                    if (piece.getTeamColor() == teamColor && !moves.isEmpty()) {
                         return false;
                     }
                 }
             }
         }
-        return !isInCheckmate(teamColor);
+        return true;
     }
 
     /**
