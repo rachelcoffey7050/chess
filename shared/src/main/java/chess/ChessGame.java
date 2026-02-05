@@ -62,7 +62,7 @@ public class ChessGame {
                 }
                 this.reverseMove(move, captured);
         }
-        if (moves.isEmpty()){
+        if (newMoves.isEmpty()){
             return null;
         }
         return newMoves;
@@ -162,6 +162,8 @@ public class ChessGame {
      */
     public boolean isInCheckmate(TeamColor teamColor) {
         ChessPosition kingSpot = findKing(teamColor);
+        System.out.println("Is in check: " + this.isInCheck(teamColor));
+        System.out.println("Has no valid moves: " + (validMoves(kingSpot)==null));
         return this.isInCheck(teamColor) && validMoves(kingSpot) == null;
     }
 
@@ -197,7 +199,7 @@ public class ChessGame {
                 }
             }
         }
-        return true;
+        return !isInCheckmate(teamColor);
     }
 
     /**
