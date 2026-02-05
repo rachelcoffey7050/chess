@@ -92,13 +92,33 @@ public class ChessGame {
     public void makeMove(ChessMove move) throws InvalidMoveException {
         ChessPosition currentPosition = move.getStartPosition();
         ChessPiece currentPiece = board.getPiece(currentPosition);
-        var moves = validMoves(currentPosition);
-        if (currentPiece!=null && moves!=null && moves.contains(move)){
-            this.board.addPiece(move.getEndPosition(), currentPiece);
-            this.board.addPiece(currentPosition, null);
+        if (currentPiece!=null && currentPiece.getTeamColor()==teamTurn) {
+            var moves = validMoves(currentPosition);
+            if (moves!=null && moves.contains(move)) {
+                if (move.getPromotionPiece()!=null){
+                    this.board.addPiece(move.getEndPosition(), new ChessPiece(currentPiece.getTeamColor(), move.getPromotionPiece()));
+                }
+                else {
+                    this.board.addPiece(move.getEndPosition(), currentPiece);
+                }
+                this.board.addPiece(currentPosition, null);
+                switchTurn();
+            }
+            else {
+                throw new InvalidMoveException("Move not valid");
+            }
         }
         else {
             throw new InvalidMoveException("Move not valid");
+        }
+
+    }
+
+    private void switchTurn(){
+        if(this.teamTurn==TeamColor.BLACK){
+            this.teamTurn = TeamColor.WHITE;
+        } else{
+            this.teamTurn = TeamColor.BLACK;
         }
     }
 
@@ -169,9 +189,11 @@ public class ChessGame {
             for (int c = 1; c < 9; c++) {
                 ChessPosition position = new ChessPosition(r, c);
                 ChessPiece piece = this.board.getPiece(position);
-                var moves = validMoves(position);
-                if (piece!=null && piece.getTeamColor()==teamColor && moves!=null){
-                    return false;
+                if (piece!=null) {
+                    var moves = validMoves(position);
+                    if (piece.getTeamColor() == teamColor && moves != null) {
+                        return false;
+                    }
                 }
             }
         }
