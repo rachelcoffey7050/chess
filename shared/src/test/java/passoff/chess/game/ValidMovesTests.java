@@ -40,6 +40,8 @@ public class ValidMovesTests {
         ChessPosition queenPosition = new ChessPosition(2, 4);
         validMoves = TestUtilities.loadMoves(queenPosition, new int[][]{{3, 5}, {4, 4}});
         assertMoves(game, validMoves, queenPosition);
+        System.out.println("Knight moves: " + game.validMoves(knightPosition));
+        System.out.println("Queen moves: " + game.validMoves(queenPosition));
     }
 
 

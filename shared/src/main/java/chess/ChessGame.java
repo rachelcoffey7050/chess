@@ -1,6 +1,8 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -50,31 +52,35 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
+        var newMoves = new ArrayList<ChessMove>();
         ChessPiece currentPiece = this.board.getPiece(startPosition);
         var moves = currentPiece.pieceMoves(this.board, startPosition);
         for (ChessMove move : moves) {
-                this.makeTemporaryMove(move);
-                if (isInCheck(this.teamTurn)){
-                    moves.remove(move);
+                ChessPiece captured = this.makeTemporaryMove(move);
+                if (!isInCheck(currentPiece.getTeamColor())){
+                    newMoves.add(move);
                 }
-                this.reverseMove(move);
+                this.reverseMove(move, captured);
         }
         if (moves.isEmpty()){
             return null;
         }
-        return moves;
+        return newMoves;
     }
 
-    private void makeTemporaryMove(ChessMove move) {
+    private ChessPiece makeTemporaryMove(ChessMove move) {
         ChessPosition currentPosition = move.getStartPosition();
-        this.board.addPiece(move.getEndPosition(), board.getPiece(currentPosition));
+        ChessPosition endPosition = move.getEndPosition();
+        ChessPiece capturedPiece = board.getPiece(endPosition);
+        this.board.addPiece(endPosition, board.getPiece(currentPosition));
         this.board.addPiece(currentPosition, null);
+        return capturedPiece;
     }
 
-    private void reverseMove(ChessMove move) {
+    private void reverseMove(ChessMove move, ChessPiece captured) {
         ChessPosition currentPosition = move.getEndPosition();
         this.board.addPiece(move.getStartPosition(), board.getPiece(currentPosition));
-        this.board.addPiece(currentPosition, null);
+        this.board.addPiece(currentPosition, captured);
     }
 
     /**
@@ -85,9 +91,14 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
         ChessPosition currentPosition = move.getStartPosition();
-        if (validMoves(currentPosition).contains(move)){
-            this.board.addPiece(move.getEndPosition(), board.getPiece(currentPosition));
+        ChessPiece currentPiece = board.getPiece(currentPosition);
+        var moves = validMoves(currentPosition);
+        if (currentPiece!=null && moves!=null && moves.contains(move)){
+            this.board.addPiece(move.getEndPosition(), currentPiece);
             this.board.addPiece(currentPosition, null);
+        }
+        else {
+            throw new InvalidMoveException("Move not valid");
         }
     }
 
@@ -98,7 +109,29 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        for (int r = 1; r < 9; r++) {
+            for (int c = 1; c < 9; c++) {
+                ChessPosition position = new ChessPosition(r, c);
+                ChessPiece piece = this.board.getPiece(position);
+                if (piece!=null && piece.getTeamColor()!=teamColor) {
+                    var moves = piece.pieceMoves(this.board, position);
+                    if (includesCheckMove(moves, teamColor)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean includesCheckMove(Collection<ChessMove> moves, TeamColor teamColor) {
+        ChessPosition kingSpot = findKing(teamColor);
+        for (ChessMove move : moves){
+            if (move.getEndPosition().equals(kingSpot)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -108,9 +141,22 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        ChessPosition kingSpot = findKing(teamColor);
+        return this.isInCheck(teamColor) && validMoves(kingSpot) == null;
     }
 
+    private ChessPosition findKing(TeamColor teamColor){
+        for (int r = 1; r < 9; r++) {
+            for (int c = 1; c < 9; c++) {
+                ChessPosition position = new ChessPosition(r, c);
+                ChessPiece piece = this.board.getPiece(position);
+                if (piece!= null && piece.getPieceType()==ChessPiece.PieceType.KING && piece.getTeamColor()==teamColor) {
+                    return position;
+                }
+            }
+        }
+        return null;
+    }
     /**
      * Determines if the given team is in stalemate, which here is defined as having
      * no valid moves while not in check.
@@ -119,7 +165,17 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        for (int r = 1; r < 9; r++) {
+            for (int c = 1; c < 9; c++) {
+                ChessPosition position = new ChessPosition(r, c);
+                ChessPiece piece = this.board.getPiece(position);
+                var moves = validMoves(position);
+                if (piece!=null && piece.getTeamColor()==teamColor && moves!=null){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -138,5 +194,19 @@ public class ChessGame {
      */
     public ChessBoard getBoard() {
         return this.board;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessGame chessGame = (ChessGame) o;
+        return teamTurn == chessGame.teamTurn && Objects.equals(board, chessGame.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(teamTurn, board);
     }
 }
