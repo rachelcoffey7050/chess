@@ -1,10 +1,12 @@
 package service.exceptions;
 
-public class AlreadyTakenException extends Exception{
+import static service.exceptions.ResponseException.Code.Forbidden;
+
+public class AlreadyTakenException extends ResponseException{
     public AlreadyTakenException(String message) {
-        super(message);
+        super(Forbidden, message);
     }
     public AlreadyTakenException(String message, Throwable ex) {
-        super(message, ex);
+        super(Forbidden, message);
     }
 }

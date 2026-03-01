@@ -4,6 +4,7 @@ import dataaccess.*;
 import model.AuthData;
 import model.UserData;
 import service.exceptions.AlreadyTakenException;
+import service.exceptions.BadRequestException;
 import service.requestandresult.RegisterRequest;
 import service.requestandresult.RegisterResult;
 import dataaccess.UserDAO.*;
@@ -21,13 +22,17 @@ public class RegisterService {
     }
 
 
-    public RegisterResult register(RegisterRequest request) throws DataAccessException, AlreadyTakenException {
+    public RegisterResult register(RegisterRequest request)
+            throws DataAccessException, AlreadyTakenException, BadRequestException {
 
         // get user
+        if (request.username()==null || request.password()==null || request.email()==null){
+            throw new BadRequestException("Error: bad request");
+        }
         UserData user = new UserData(request.username(), request.password(), request.email());
         UserData newUser = userDAO.findUser(user);
         if (newUser != null) {
-            throw new AlreadyTakenException("username already taken");
+            throw new AlreadyTakenException("Error: username already taken");
         }
 
         userDAO.addUser(user);

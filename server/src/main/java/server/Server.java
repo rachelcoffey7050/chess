@@ -13,6 +13,8 @@ import service.requestandresult.DeleteResult;
 import service.requestandresult.RegisterRequest;
 import service.requestandresult.RegisterResult;
 
+import java.util.Map;
+
 public class Server {
 
     private final Javalin javalin;
@@ -53,7 +55,7 @@ public class Server {
 
     private void exceptionHandler(Exception ex, Context ctx){
         ctx.status(500);
-        ctx.json(ex.getMessage());
+        ctx.json(Map.of("message", ex.getMessage()));
     }
 
     private void deleteHandler(Context ctx) throws Exception {
