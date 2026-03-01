@@ -11,11 +11,17 @@ import java.util.UUID;
 
 public class RegisterService {
 
+    UserDAO userDAO;
+
+    public RegisterService(){
+        userDAO = new MemoryUserDAO();
+    }
+
+
     public RegisterResult register(RegisterRequest request) throws DataAccessException, AlreadyTakenException {
 
         // get user
         UserData user = new UserData(request.username(), request.password(), request.email());
-        UserDAO userDAO = new MemoryUserDAO();
         UserData newUser = userDAO.findUser(user);
         if (newUser != null) {
             throw new AlreadyTakenException("username already taken");

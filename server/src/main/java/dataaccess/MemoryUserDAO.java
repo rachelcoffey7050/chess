@@ -15,5 +15,4 @@ public class MemoryUserDAO implements UserDAO {
         public UserData findUser(UserData user) {
             return users.get(user.username());
         }
-
 }
