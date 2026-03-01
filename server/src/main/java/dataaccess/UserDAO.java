@@ -7,5 +7,6 @@ public interface UserDAO {
 
     UserData findUser(UserData u) throws DataAccessException;
 
+    void deleteAll();
 }
 

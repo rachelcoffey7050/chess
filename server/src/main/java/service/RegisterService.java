@@ -10,11 +10,14 @@ import dataaccess.UserDAO.*;
 import java.util.UUID;
 
 public class RegisterService {
+    private final UserDAO userDAO;
+    private final AuthDAO authDAO;
+    private final GameDAO gameDAO;
 
-    UserDAO userDAO;
-
-    public RegisterService(){
-        userDAO = new MemoryUserDAO();
+    public RegisterService(UserDAO userDAO, AuthDAO authDAO, GameDAO gameDAO){
+        this.userDAO = userDAO;
+        this.authDAO = authDAO;
+        this.gameDAO = gameDAO;
     }
 
 
@@ -29,7 +32,6 @@ public class RegisterService {
 
         userDAO.addUser(user);
 
-        AuthDAO authDAO = new MemoryAuthDAO();
         String authToken = generateToken();
         AuthData authData = new AuthData(user.username(), authToken);
         authDAO.addAuthData(authData);
