@@ -4,5 +4,5 @@ import model.*;
 
 public interface AuthDAO {
 
-    void addAuthData(AuthData u) throws DataAccessException;
+    void addAuthData(AuthData a) throws DataAccessException;
 }

@@ -24,3 +24,17 @@ public class Server {
         javalin.stop();
     }
 }
+
+//try {
+//    User user = userService.login(request.username(), request.password());
+//    sendResponse(200, user);
+//}
+//catch (UnauthorizedException e) {
+//    sendResponse(401, e.getMessage());
+//}
+//catch (BadRequestException e) {
+//    sendResponse(400, e.getMessage());
+//}
+//catch (ServiceException e) {
+//    sendResponse(500, "Error: " + e.getMessage());
+//}
