@@ -47,7 +47,7 @@ public class Server {
     // haha ignore this I forgot about the handlers
     private void registerHandler(Context ctx) throws Exception {
         RegisterRequest request = new Gson().fromJson(ctx.body(), RegisterRequest.class);
-        RegisterService service = new RegisterService(userDAO, authDAO, gameDAO);
+        RegisterService service = new RegisterService(userDAO, authDAO);
         RegisterResult result = service.register(request);
         ctx.result(new Gson().toJson(result));
         ctx.status(200);

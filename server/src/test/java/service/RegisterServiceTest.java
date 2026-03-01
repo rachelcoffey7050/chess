@@ -16,7 +16,7 @@ public class RegisterServiceTest {
     @Test
     void registerSuccess() throws Exception {
 
-        RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO(), new MemoryGameDAO());
+        RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
 
         RegisterRequest request = new RegisterRequest("rachel", "pw", "email");
 
@@ -30,7 +30,7 @@ public class RegisterServiceTest {
     @Test
     void registerDuplicateUser() throws Exception {
 
-        RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO(), new MemoryGameDAO());
+        RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
 
         RegisterRequest request = new RegisterRequest("rachel", "pw", "email");
         RegisterResult result1 = service.register(request);
