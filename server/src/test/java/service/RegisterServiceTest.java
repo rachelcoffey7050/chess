@@ -1,5 +1,9 @@
 package service;
 
+import dataaccess.MemoryAuthDAO;
+import dataaccess.MemoryGameDAO;
+import dataaccess.MemoryUserDAO;
+import dataaccess.UserDAO;
 import org.junit.jupiter.api.Test;
 import service.exceptions.AlreadyTakenException;
 import service.requestandresult.RegisterRequest;
@@ -12,7 +16,7 @@ public class RegisterServiceTest {
     @Test
     void registerSuccess() throws Exception {
 
-        RegisterService service = new RegisterService();
+        RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO(), new MemoryGameDAO());
 
         RegisterRequest request = new RegisterRequest("rachel", "pw", "email");
 
@@ -26,7 +30,7 @@ public class RegisterServiceTest {
     @Test
     void registerDuplicateUser() throws Exception {
 
-        RegisterService service = new RegisterService();
+        RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO(), new MemoryGameDAO());
 
         RegisterRequest request = new RegisterRequest("rachel", "pw", "email");
         RegisterResult result1 = service.register(request);
