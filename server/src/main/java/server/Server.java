@@ -4,6 +4,10 @@ import io.javalin.*;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import com.google.gson.Gson;
+import service.RegisterService;
+import service.exceptions.ResponseException;
+import service.requestandresult.RegisterRequest;
+import service.requestandresult.RegisterResult;
 
 public class Server {
 
@@ -11,7 +15,10 @@ public class Server {
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
-        // Register your endpoints and exception handlers here.
+        javalin.post("/user", this::registerHandler);
+        javalin.exception(ResponseException.class, this::responseExceptionHandler);
+        javalin.exception(Exception.class, this::exceptionHandler);
+
 
     }
 
@@ -23,18 +30,23 @@ public class Server {
     public void stop() {
         javalin.stop();
     }
-}
 
-//try {
-//    User user = userService.login(request.username(), request.password());
-//    sendResponse(200, user);
-//}
-//catch (UnauthorizedException e) {
-//    sendResponse(401, e.getMessage());
-//}
-//catch (BadRequestException e) {
-//    sendResponse(400, e.getMessage());
-//}
-//catch (ServiceException e) {
-//    sendResponse(500, "Error: " + e.getMessage());
-//}
+    // haha ignore this I forgot about the handlers
+    private void registerHandler(Context ctx) throws Exception {
+        RegisterRequest request = new Gson().fromJson(ctx.body(), RegisterRequest.class);
+        RegisterService service = new RegisterService();
+        RegisterResult result = service.register(request);
+        ctx.result(new Gson().toJson(result));
+        ctx.status(200);
+    }
+
+    private void exceptionHandler(Exception ex, Context ctx){
+        ctx.status(500);
+        ctx.json(ex.getMessage());
+    }
+
+    private void responseExceptionHandler(ResponseException ex, Context ctx){
+        ctx.status(ex.toHttpStatusCode());
+        ctx.result(ex.toJson());
+    }
+}
