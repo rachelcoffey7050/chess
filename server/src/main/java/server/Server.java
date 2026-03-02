@@ -6,12 +6,10 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import com.google.gson.Gson;
 import service.DeleteService;
+import service.LoginService;
 import service.RegisterService;
 import service.exceptions.ResponseException;
-import service.requestandresult.DeleteRequest;
-import service.requestandresult.DeleteResult;
-import service.requestandresult.RegisterRequest;
-import service.requestandresult.RegisterResult;
+import service.requestandresult.*;
 
 import java.util.Map;
 
@@ -29,6 +27,7 @@ public class Server {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
         javalin.post("/user", this::registerHandler);
         javalin.delete("/db", this::deleteHandler);
+        javalin.post("/session", this::loginHandler);
         javalin.exception(ResponseException.class, this::responseExceptionHandler);
         javalin.exception(Exception.class, this::exceptionHandler);
 
@@ -44,11 +43,18 @@ public class Server {
         javalin.stop();
     }
 
-    // haha ignore this I forgot about the handlers
     private void registerHandler(Context ctx) throws Exception {
         RegisterRequest request = new Gson().fromJson(ctx.body(), RegisterRequest.class);
         RegisterService service = new RegisterService(userDAO, authDAO);
         RegisterResult result = service.register(request);
+        ctx.result(new Gson().toJson(result));
+        ctx.status(200);
+    }
+
+    private void loginHandler(Context ctx) throws Exception {
+        LoginRequest request = new Gson().fromJson(ctx.body(), LoginRequest.class);
+        LoginService service = new LoginService(userDAO, authDAO);
+        LoginResult result = service.login(request);
         ctx.result(new Gson().toJson(result));
         ctx.status(200);
     }
