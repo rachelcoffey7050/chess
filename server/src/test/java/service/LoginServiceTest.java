@@ -1,7 +1,9 @@
 package service;
 
+import dataaccess.AuthDAO;
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryUserDAO;
+import dataaccess.UserDAO;
 import org.junit.jupiter.api.Test;
 import service.exceptions.AlreadyTakenException;
 import service.exceptions.UnauthorizedException;
@@ -31,8 +33,11 @@ public class LoginServiceTest {
     @Test
     void LoginWrongPassword() throws Exception {
 
-        LoginService service = new LoginService(new MemoryUserDAO(), new MemoryAuthDAO());
-        RegisterService serviceR = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
+
+        LoginService service = new LoginService(userDAO, authDAO);
+        RegisterService serviceR = new RegisterService(userDAO, authDAO);
 
         RegisterRequest rRequest = new RegisterRequest("rachel", "pw", "email");
         RegisterResult result = serviceR.register(rRequest);

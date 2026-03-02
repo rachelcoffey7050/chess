@@ -29,7 +29,7 @@ public class LoginService {
         }
         UserData user = new UserData(request.username(), request.password(), "filler-email");
         UserData newUser = userDAO.findUser(user);
-        if (newUser == null || !request.password().equals(user.password())) {
+        if (newUser == null || !request.password().equals(newUser.password())) {
             throw new UnauthorizedException("Error: unauthorized");
         }
 
