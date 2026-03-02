@@ -7,6 +7,7 @@ import io.javalin.http.Context;
 import com.google.gson.Gson;
 import service.DeleteService;
 import service.LoginService;
+import service.LogoutService;
 import service.RegisterService;
 import service.exceptions.ResponseException;
 import service.requestandresult.*;
@@ -55,6 +56,14 @@ public class Server {
         LoginRequest request = new Gson().fromJson(ctx.body(), LoginRequest.class);
         LoginService service = new LoginService(userDAO, authDAO);
         LoginResult result = service.login(request);
+        ctx.result(new Gson().toJson(result));
+        ctx.status(200);
+    }
+
+    private void logoutHandler(Context ctx) throws Exception {
+        LogoutRequest request = new Gson().fromJson(ctx.body(), LogoutRequest.class);
+        LogoutService service = new LogoutService(authDAO);
+        LogoutResult result = service.logout(request);
         ctx.result(new Gson().toJson(result));
         ctx.status(200);
     }
