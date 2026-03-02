@@ -5,10 +5,7 @@ import io.javalin.*;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import com.google.gson.Gson;
-import service.DeleteService;
-import service.LoginService;
-import service.LogoutService;
-import service.RegisterService;
+import service.*;
 import service.exceptions.ResponseException;
 import service.requestandresult.*;
 
@@ -32,6 +29,7 @@ public class Server {
         javalin.exception(ResponseException.class, this::responseExceptionHandler);
         javalin.exception(Exception.class, this::exceptionHandler);
         javalin.delete("/session", this::logoutHandler);
+        javalin.post("/game", this::createGameHandler);
 
 
     }
@@ -49,6 +47,17 @@ public class Server {
         RegisterRequest request = new Gson().fromJson(ctx.body(), RegisterRequest.class);
         RegisterService service = new RegisterService(userDAO, authDAO);
         RegisterResult result = service.register(request);
+        ctx.result(new Gson().toJson(result));
+        ctx.status(200);
+    }
+
+    private void createGameHandler(Context ctx) throws Exception {
+        CreateRequest firstRequest = new Gson().fromJson(ctx.body(), CreateRequest.class);
+        String gameName = firstRequest.gameName();
+        String authToken = ctx.header("Authorization");
+        CreateRequest request = new CreateRequest(gameName, authToken);
+        CreateGameService service = new CreateGameService(gameDAO, authDAO);
+        CreateResult result = service.createGame(request);
         ctx.result(new Gson().toJson(result));
         ctx.status(200);
     }

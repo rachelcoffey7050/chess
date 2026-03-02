@@ -2,7 +2,6 @@ package service;
 
 import dataaccess.*;
 import org.junit.jupiter.api.Test;
-import service.exceptions.AlreadyTakenException;
 import service.exceptions.UnauthorizedException;
 import service.requestandresult.*;
 
