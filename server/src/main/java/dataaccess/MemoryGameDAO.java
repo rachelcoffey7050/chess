@@ -14,7 +14,11 @@ public class MemoryGameDAO implements GameDAO{
         return data.gameID();
     }
 
-//    public GameData findGames(){
-//
-//    }
+    public GameData findGame(Integer gameID){
+        return games.get(gameID);
+    }
+
+    public void updateGame(GameData gameData){
+        games.put(gameData.gameID(), gameData);
+    }
 }
