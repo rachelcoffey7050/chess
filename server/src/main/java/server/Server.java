@@ -1,5 +1,6 @@
 package server;
 
+import chess.ChessGame;
 import dataaccess.*;
 import io.javalin.*;
 import io.javalin.Javalin;
@@ -30,6 +31,7 @@ public class Server {
         javalin.exception(Exception.class, this::exceptionHandler);
         javalin.delete("/session", this::logoutHandler);
         javalin.post("/game", this::createGameHandler);
+        javalin.put("/game", this::joinGameHandler);
 
 
     }
@@ -58,6 +60,18 @@ public class Server {
         CreateRequest request = new CreateRequest(gameName, authToken);
         CreateGameService service = new CreateGameService(gameDAO, authDAO);
         CreateResult result = service.createGame(request);
+        ctx.result(new Gson().toJson(result));
+        ctx.status(200);
+    }
+
+    private void joinGameHandler(Context ctx) throws Exception {
+        JoinRequest firstRequest = new Gson().fromJson(ctx.body(), JoinRequest.class);
+        java.lang.Integer gameID = firstRequest.gameID();
+        ChessGame.TeamColor color = firstRequest.playerColor();
+        String authToken = ctx.header("Authorization");
+        JoinRequest request = new JoinRequest(authToken, color, gameID);
+        JoinGameService service = new JoinGameService(gameDAO, authDAO);
+        JoinResult result = service.joinGame(request);
         ctx.result(new Gson().toJson(result));
         ctx.status(200);
     }
