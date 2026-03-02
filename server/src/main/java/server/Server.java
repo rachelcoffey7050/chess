@@ -31,6 +31,7 @@ public class Server {
         javalin.post("/session", this::loginHandler);
         javalin.exception(ResponseException.class, this::responseExceptionHandler);
         javalin.exception(Exception.class, this::exceptionHandler);
+        javalin.delete("/session", this::logoutHandler);
 
 
     }
@@ -61,7 +62,8 @@ public class Server {
     }
 
     private void logoutHandler(Context ctx) throws Exception {
-        LogoutRequest request = new Gson().fromJson(ctx.body(), LogoutRequest.class);
+        String authToken = ctx.header("Authorization");
+        LogoutRequest request = new LogoutRequest(authToken);
         LogoutService service = new LogoutService(authDAO);
         LogoutResult result = service.logout(request);
         ctx.result(new Gson().toJson(result));

@@ -37,19 +37,23 @@ public class LogoutServiceTest {
     }
 
     @Test
-    void LoginWrongPassword() throws Exception {
+    void LogoutWrongAuth() throws Exception {
 
         UserDAO userDAO = new MemoryUserDAO();
         AuthDAO authDAO = new MemoryAuthDAO();
 
-        LoginService service = new LoginService(userDAO, authDAO);
+
         RegisterService serviceR = new RegisterService(userDAO, authDAO);
-
         RegisterRequest rRequest = new RegisterRequest("rachel", "pw", "email");
-        RegisterResult result = serviceR.register(rRequest);
+        serviceR.register(rRequest);
 
-        LoginRequest request = new LoginRequest("rachel", "password");
+        LoginService serviceL = new LoginService(userDAO, authDAO);
+        LoginRequest requestL = new LoginRequest("rachel", "pw");
+        serviceL.login(requestL);
 
-        assertThrows(UnauthorizedException.class, () -> service.login(request));
+        LogoutService service = new LogoutService(authDAO);
+        LogoutRequest request = new LogoutRequest("fakeAuthToken");
+
+        assertThrows(UnauthorizedException.class, () -> service.logout(request));
     }
 }
