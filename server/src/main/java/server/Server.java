@@ -32,6 +32,7 @@ public class Server {
         javalin.delete("/session", this::logoutHandler);
         javalin.post("/game", this::createGameHandler);
         javalin.put("/game", this::joinGameHandler);
+        javalin.get("/game", this::listHandler);
 
 
     }
@@ -69,7 +70,7 @@ public class Server {
         java.lang.Integer gameID = firstRequest.gameID();
         ChessGame.TeamColor color = firstRequest.playerColor();
         String authToken = ctx.header("Authorization");
-        JoinRequest request = new JoinRequest(authToken, color, gameID);
+        JoinRequest request = new JoinRequest(color, gameID, authToken);
         JoinGameService service = new JoinGameService(gameDAO, authDAO);
         JoinResult result = service.joinGame(request);
         ctx.result(new Gson().toJson(result));
@@ -89,6 +90,15 @@ public class Server {
         LogoutRequest request = new LogoutRequest(authToken);
         LogoutService service = new LogoutService(authDAO);
         LogoutResult result = service.logout(request);
+        ctx.result(new Gson().toJson(result));
+        ctx.status(200);
+    }
+
+    private void listHandler(Context ctx) throws Exception {
+        String authToken = ctx.header("Authorization");
+        ListRequest request = new ListRequest(authToken);
+        ListService service = new ListService(gameDAO, authDAO);
+        ListResult result = service.listGames(request);
         ctx.result(new Gson().toJson(result));
         ctx.status(200);
     }

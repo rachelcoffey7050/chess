@@ -2,6 +2,9 @@ package dataaccess;
 
 import model.GameData;
 
+import java.util.HashMap;
+import java.util.List;
+
 public interface GameDAO {
 
     void deleteAll();
@@ -11,5 +14,7 @@ public interface GameDAO {
     GameData findGame(Integer gameID) throws DataAccessException;
 
     void updateGame(GameData gameData) throws DataAccessException;
+
+    List<GameData> getGames() throws DataAccessException;
 
 }

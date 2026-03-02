@@ -19,7 +19,7 @@ public class CreateGameService {
     public CreateGameService(GameDAO gameDAO, AuthDAO authDAO){
         this.gameDAO = gameDAO;
         this.authDAO = authDAO;
-        this.counter = 999;
+        this.counter = 1000;
     }
 
     public CreateResult createGame(CreateRequest request)
@@ -33,10 +33,11 @@ public class CreateGameService {
         if (authData == null){
             throw new UnauthorizedException("Error: unauthorized access");
         }
-        counter += 1;
+
         GameData newGame = new GameData(counter, null, null, gameName, new ChessGame());
-        gameDAO.addGame(newGame);
-        return new CreateResult(counter);
+        Integer gameID = gameDAO.addGame(newGame);
+        counter += 1;
+        return new CreateResult(gameID);
     }
 
 }
