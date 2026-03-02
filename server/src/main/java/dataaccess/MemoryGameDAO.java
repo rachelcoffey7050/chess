@@ -6,6 +6,15 @@ import java.util.HashMap;
 
 public class MemoryGameDAO implements GameDAO{
 
-    final private HashMap<String, GameData> games = new HashMap<>();
+    final private HashMap<Integer, GameData> games = new HashMap<>();
     public void deleteAll() { games.clear();}
+
+    public Integer addGame(GameData data) {
+        games.put(data.gameID(), data);
+        return data.gameID();
+    }
+
+//    public GameData findGames(){
+//
+//    }
 }

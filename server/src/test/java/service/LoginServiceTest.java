@@ -5,7 +5,6 @@ import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryUserDAO;
 import dataaccess.UserDAO;
 import org.junit.jupiter.api.Test;
-import service.exceptions.AlreadyTakenException;
 import service.exceptions.UnauthorizedException;
 import service.requestandresult.LoginRequest;
 import service.requestandresult.LoginResult;
@@ -19,7 +18,14 @@ public class LoginServiceTest {
     @Test
     void loginSuccess() throws Exception {
 
-        LoginService service = new LoginService(new MemoryUserDAO(), new MemoryAuthDAO());
+        UserDAO userDAO = new MemoryUserDAO();
+        AuthDAO authDAO = new MemoryAuthDAO();
+
+        RegisterService serviceR = new RegisterService(userDAO, authDAO);
+        RegisterRequest rRequest = new RegisterRequest("rachel", "pw", "email");
+        serviceR.register(rRequest);
+
+        LoginService service = new LoginService(userDAO, authDAO);
 
         LoginRequest request = new LoginRequest("rachel", "pw");
 
