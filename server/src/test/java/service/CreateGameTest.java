@@ -3,6 +3,7 @@ package service;
 import dataaccess.*;
 import org.junit.jupiter.api.Test;
 import service.exceptions.AlreadyTakenException;
+import service.exceptions.UnauthorizedException;
 import service.requestandresult.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,14 +34,12 @@ public class CreateGameTest {
     }
 
     @Test
-    void registerDuplicateUser() throws Exception {
+    void createGameWithFakeAuthToken() throws Exception {
 
-        RegisterService service = new RegisterService(new MemoryUserDAO(), new MemoryAuthDAO());
+        CreateGameService service = new CreateGameService(new MemoryGameDAO(), new MemoryAuthDAO());
+        CreateRequest request = new CreateRequest("firstGame", "fakeAuthToken");
 
-        RegisterRequest request = new RegisterRequest("rachel", "pw", "email");
-        RegisterResult result1 = service.register(request);
-
-        assertThrows(AlreadyTakenException.class, () -> service.register(request));
+        assertThrows(UnauthorizedException.class, ()-> service.createGame(request));
     }
 
 }
