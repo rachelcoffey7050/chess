@@ -2,17 +2,20 @@ package dataaccess;
 
 import model.GameData;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+
 
 public class MemoryGameDAO implements GameDAO{
 
-    final private List<GameData> games = new ArrayList<>();
+    final private HashMap<Integer, GameData> games = new HashMap<>();
     public void deleteAll() { games.clear();}
+    private Integer counter = 1;
 
     public Integer addGame(GameData data) {
-        games.add(data);
-        return data.gameID();
+        GameData newData = new GameData(counter, data.whiteUsername(), data.blackUsername(), data.gameName(), data.game());
+        games.put(counter, newData);
+        counter+=1;
+        return newData.gameID();
     }
 
     public GameData findGame(Integer gameID){
@@ -20,10 +23,10 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     public void updateGame(GameData gameData){
-        games.set(gameData.gameID(), gameData);
+        games.put(gameData.gameID(), gameData);
     }
 
-    public List<GameData> getGames() {
+    public HashMap<Integer, GameData> getGames() {
         return games;
     }
 }

@@ -14,12 +14,10 @@ import service.requestandresult.CreateResult;
 public class CreateGameService {
     private final GameDAO gameDAO;
     private final AuthDAO authDAO;
-    Integer counter;
 
     public CreateGameService(GameDAO gameDAO, AuthDAO authDAO){
         this.gameDAO = gameDAO;
         this.authDAO = authDAO;
-        this.counter = 0;
     }
 
     public CreateResult createGame(CreateRequest request)
@@ -34,9 +32,8 @@ public class CreateGameService {
             throw new UnauthorizedException("Error: unauthorized access");
         }
 
-        GameData newGame = new GameData(counter, null, null, gameName, new ChessGame());
+        GameData newGame = new GameData(403, null, null, gameName, new ChessGame());
         Integer gameID = gameDAO.addGame(newGame);
-        counter += 1;
         return new CreateResult(gameID);
     }
 

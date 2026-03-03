@@ -15,6 +15,6 @@ public interface GameDAO {
 
     void updateGame(GameData gameData) throws DataAccessException;
 
-    List<GameData> getGames() throws DataAccessException;
+    HashMap<Integer, GameData> getGames() throws DataAccessException;
 
 }

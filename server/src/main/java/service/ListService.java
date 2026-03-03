@@ -9,6 +9,7 @@ import service.exceptions.UnauthorizedException;
 import service.requestandresult.ListRequest;
 import service.requestandresult.ListResult;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +27,8 @@ public class ListService {
         if (authData==null){
             throw new UnauthorizedException("Error: unauthorized");
         }
-        List<GameData> games = gameDAO.getGames();
-        return new ListResult(games);
+        HashMap<Integer, GameData> games = gameDAO.getGames();
+        List<GameData> listData = new ArrayList<>(games.values());
+        return new ListResult(listData);
     }
 }
