@@ -28,7 +28,9 @@ public class JoinGameService {
         if (authData==null){
             throw new UnauthorizedException("Error: unauthorized");
         }
-
+        if (request.playerColor()==null || request.gameID()==null){
+            throw new BadRequestException("Error: bad request");
+        }
         GameData gameData = gameDAO.findGame(request.gameID());
         if (gameData==null) {
             throw new BadRequestException("Error: bad request, game does not exist");

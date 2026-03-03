@@ -19,7 +19,7 @@ public class CreateGameService {
     public CreateGameService(GameDAO gameDAO, AuthDAO authDAO){
         this.gameDAO = gameDAO;
         this.authDAO = authDAO;
-        this.counter = 1000;
+        this.counter = 0;
     }
 
     public CreateResult createGame(CreateRequest request)

@@ -32,7 +32,7 @@ public class JoinGameTest {
         CreateResult resultC = serviceC.createGame(requestC);
 
         JoinGameService service = new JoinGameService(gameDAO, authDAO);
-        JoinRequest request = new JoinRequest(resultL.authToken(), ChessGame.TeamColor.WHITE, resultC.gameID());
+        JoinRequest request = new JoinRequest(ChessGame.TeamColor.WHITE, resultC.gameID(), resultL.authToken());
         JoinResult result = service.joinGame(request);
 
         assertNotNull(result);
@@ -59,9 +59,9 @@ public class JoinGameTest {
         CreateResult resultC = serviceC.createGame(requestC);
 
         JoinGameService service = new JoinGameService(gameDAO, authDAO);
-        JoinRequest request1 = new JoinRequest(resultL.authToken(), ChessGame.TeamColor.WHITE, resultC.gameID());
+        JoinRequest request1 = new JoinRequest(ChessGame.TeamColor.WHITE, resultC.gameID(), resultL.authToken());
         service.joinGame(request1);
-        JoinRequest request2 = new JoinRequest(resultL.authToken(), ChessGame.TeamColor.WHITE, resultC.gameID());
+        JoinRequest request2 = new JoinRequest(ChessGame.TeamColor.WHITE, resultC.gameID(), resultL.authToken());
 
         assertThrows(AlreadyTakenException.class, () -> service.joinGame(request2));
     }

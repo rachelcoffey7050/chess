@@ -20,7 +20,7 @@ public class MemoryGameDAO implements GameDAO{
     }
 
     public void updateGame(GameData gameData){
-        games.add(gameData);
+        games.set(gameData.gameID(), gameData);
     }
 
     public List<GameData> getGames() {
