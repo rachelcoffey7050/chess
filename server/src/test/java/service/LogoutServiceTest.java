@@ -37,7 +37,7 @@ public class LogoutServiceTest {
     }
 
     @Test
-    void LogoutWrongAuth() throws Exception {
+    void logoutWrongAuth() throws Exception {
 
         UserDAO userDAO = new MemoryUserDAO();
         AuthDAO authDAO = new MemoryAuthDAO();

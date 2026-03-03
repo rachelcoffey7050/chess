@@ -37,7 +37,7 @@ public class LoginServiceTest {
     }
 
     @Test
-    void LoginWrongPassword() throws Exception {
+    void loginWrongPassword() throws Exception {
 
         UserDAO userDAO = new MemoryUserDAO();
         AuthDAO authDAO = new MemoryAuthDAO();
