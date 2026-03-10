@@ -20,10 +20,18 @@ public class Server {
     private final GameDAO gameDAO;
 
     public Server() {
-        this.userDAO = new MemoryUserDAO();
-        this.authDAO = new MemoryAuthDAO();
-        this.gameDAO = new MemoryGameDAO();
+        this.userDAO = new SQLUserDAO();
+        this.authDAO = new SQLAuthDAO();
+        this.gameDAO = new SQLGameDAO();
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
+
+        try {
+            DatabaseCreator.configureDatabase();
+        } catch (Exception e){
+            System.err.println("Database initialization failed: " + e.getMessage());
+            return;
+        }
+
         javalin.post("/user", this::registerHandler);
         javalin.delete("/db", this::deleteHandler);
         javalin.post("/session", this::loginHandler);
