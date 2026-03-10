@@ -13,19 +13,6 @@ import static dataaccess.DatabaseCreator.executeUpdate;
 
 public class SQLAuthDAO implements AuthDAO{
 
-    public SQLAuthDAO() throws ResponseException, DataAccessException {
-        String[] createStatements = {
-                """
-            CREATE TABLE IF NOT EXISTS  authTokens (
-              `authToken` TEXT NOT NULL,
-              `json` TEXT DEFAULT NULL,
-              PRIMARY KEY (`authToken`),
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-            """
-        };
-        DatabaseCreator.configureDatabase(createStatements);
-    }
-
     public void addAuthData(AuthData a) throws DataAccessException {
         var statement = "INSERT INTO authTokens (authToken, json) VALUES (?, ?)";
         String json = new Gson().toJson(a);

@@ -15,19 +15,6 @@ import static dataaccess.DatabaseCreator.executeUpdate;
 
 public class SQLGameDAO implements GameDAO{
 
-    public SQLGameDAO() throws ResponseException, DataAccessException {
-        String[] createStatements = {
-                """
-            CREATE TABLE IF NOT EXISTS  games (
-              `id` int NOT NULL AUTO_INCREMENT,
-              `json` TEXT DEFAULT NULL,
-              PRIMARY KEY (`id`),
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-            """
-        };
-        DatabaseCreator.configureDatabase(createStatements);
-    }
-
     public Integer addGame(GameData game) throws DataAccessException, ResponseException {
         var statement = "INSERT INTO games (id, json) VALUES (?, ?)";
         String json = new Gson().toJson(game);

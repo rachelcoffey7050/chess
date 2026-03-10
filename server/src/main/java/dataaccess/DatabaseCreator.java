@@ -40,7 +40,30 @@ public class DatabaseCreator {
         }
     }
 
-    public static void configureDatabase(String[] createStatements) throws ResponseException, DataAccessException {
+    public static void configureDatabase() throws ResponseException, DataAccessException {
+        String[] createStatements = {
+                """
+            CREATE TABLE IF NOT EXISTS  games (
+              `id` int NOT NULL AUTO_INCREMENT,
+              `json` TEXT DEFAULT NULL,
+              PRIMARY KEY (`id`),
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """,
+                """
+            CREATE TABLE IF NOT EXISTS  authTokens (
+              `authToken` TEXT NOT NULL,
+              `json` TEXT DEFAULT NULL,
+              PRIMARY KEY (`authToken`),
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """,
+                """
+            CREATE TABLE IF NOT EXISTS  users (
+              `username` varchar(256) NOT NULL,
+              `json` TEXT DEFAULT NULL,
+              PRIMARY KEY (`username`),
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+            """
+        };
         DatabaseManager.createDatabase();
         try (Connection conn = DatabaseManager.getConnection()) {
             for (String statement : createStatements) {
