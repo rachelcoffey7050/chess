@@ -5,6 +5,7 @@ import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.AuthData;
 import model.GameData;
+import service.exceptions.ResponseException;
 import service.exceptions.UnauthorizedException;
 import service.requestandresult.ListRequest;
 import service.requestandresult.ListResult;
@@ -22,7 +23,7 @@ public class ListService {
         this.authDAO = authDAO;
     }
 
-    public ListResult listGames(ListRequest request) throws DataAccessException, UnauthorizedException {
+    public ListResult listGames(ListRequest request) throws DataAccessException, ResponseException {
         AuthData authData = authDAO.findAuth(request.authToken());
         if (authData==null){
             throw new UnauthorizedException("Error: unauthorized");

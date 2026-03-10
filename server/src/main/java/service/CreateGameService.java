@@ -7,6 +7,7 @@ import dataaccess.GameDAO;
 import model.AuthData;
 import model.GameData;
 import service.exceptions.BadRequestException;
+import service.exceptions.ResponseException;
 import service.exceptions.UnauthorizedException;
 import service.requestandresult.CreateRequest;
 import service.requestandresult.CreateResult;
@@ -21,7 +22,7 @@ public class CreateGameService {
     }
 
     public CreateResult createGame(CreateRequest request)
-            throws DataAccessException, UnauthorizedException, BadRequestException {
+            throws DataAccessException, ResponseException {
         String authToken = request.authToken();
         String gameName = request.gameName();
         if (authToken==null || gameName==null){

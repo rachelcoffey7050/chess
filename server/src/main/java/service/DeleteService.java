@@ -1,8 +1,10 @@
 package service;
 
 import dataaccess.AuthDAO;
+import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import dataaccess.UserDAO;
+import service.exceptions.ResponseException;
 import service.requestandresult.DeleteRequest;
 import service.requestandresult.DeleteResult;
 
@@ -17,7 +19,7 @@ public class DeleteService {
         this.gameDAO = gameDAO;
     }
 
-    public DeleteResult delete(DeleteRequest request) {
+    public DeleteResult delete(DeleteRequest request) throws ResponseException, DataAccessException {
         userDAO.deleteAll();
         authDAO.deleteAll();
         gameDAO.deleteAll();

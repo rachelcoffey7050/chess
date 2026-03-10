@@ -57,7 +57,7 @@ public class SQLUserDAO implements UserDAO {
     }
 
     public void deleteAll() throws ResponseException {
-        var statement = "TRUNCATE pet";
+        var statement = "TRUNCATE users";
         DatabaseCreator.executeUpdate(statement);
     }
 

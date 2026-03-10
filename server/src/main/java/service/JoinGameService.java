@@ -8,6 +8,7 @@ import model.AuthData;
 import model.GameData;
 import service.exceptions.AlreadyTakenException;
 import service.exceptions.BadRequestException;
+import service.exceptions.ResponseException;
 import service.exceptions.UnauthorizedException;
 import service.requestandresult.JoinRequest;
 import service.requestandresult.JoinResult;
@@ -22,7 +23,7 @@ public class JoinGameService {
     }
 
     public JoinResult joinGame(JoinRequest request)
-            throws DataAccessException, UnauthorizedException, BadRequestException, AlreadyTakenException {
+            throws DataAccessException, ResponseException {
 
         AuthData authData = authDAO.findAuth(request.authToken());
         if (authData==null){
