@@ -5,7 +5,9 @@ import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
 import model.AuthData;
 import model.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 import service.exceptions.BadRequestException;
+import service.exceptions.ResponseException;
 import service.exceptions.UnauthorizedException;
 import service.requestandresult.LoginRequest;
 import service.requestandresult.LoginResult;
@@ -22,14 +24,14 @@ public class LoginService {
     }
 
     public LoginResult login(LoginRequest request)
-            throws DataAccessException, BadRequestException, UnauthorizedException {
+            throws DataAccessException, ResponseException {
 
         if (request.username()==null || request.password()==null){
             throw new BadRequestException("Error: bad request");
         }
         UserData user = new UserData(request.username(), request.password(), "filler-email");
         UserData newUser = userDAO.findUser(user);
-        if (newUser == null || !request.password().equals(newUser.password())) {
+        if (newUser == null || BCrypt.checkpw(request.password(), newUser.password())) {
             throw new UnauthorizedException("Error: unauthorized");
         }
 
