@@ -1,6 +1,8 @@
 package Database;
 
 import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
 import dataaccess.DataAccessException;
 import dataaccess.SQLAuthDAO;
 import dataaccess.SQLGameDAO;
@@ -8,13 +10,70 @@ import dataaccess.SQLUserDAO;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
-import org.eclipse.jetty.server.Authentication;
 import org.junit.jupiter.api.Test;
 import service.exceptions.ResponseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DatabaseUnitTests {
+
+    @Test void updateGameNegative() throws Exception {
+        SQLGameDAO gameDAO = new SQLGameDAO();
+        gameDAO.deleteAll();
+
+        ChessGame chessGame = new ChessGame();
+        chessGame.makeMove(new ChessMove(new ChessPosition(2, 4), new ChessPosition(3,4), null));
+        GameData game = new GameData(1, "me", "you", "name1", new ChessGame());
+        gameDAO.addGame(game);
+        gameDAO.updateGame(new GameData(1, "me", "you", "name1", chessGame));
+        chessGame.makeMove(new ChessMove(new ChessPosition(7, 2), new ChessPosition(6,2), null));
+
+        GameData found = gameDAO.findGame(1);
+
+        assertNotEquals(chessGame, found.game());
+    }
+
+    @Test void updateGamePositive() throws Exception {
+        SQLGameDAO gameDAO = new SQLGameDAO();
+        gameDAO.deleteAll();
+
+        ChessGame chessGame = new ChessGame();
+        chessGame.makeMove(new ChessMove(new ChessPosition(2, 4), new ChessPosition(3,4), null));
+        GameData game = new GameData(1, "me", "you", "name1", new ChessGame());
+        gameDAO.addGame(game);
+        gameDAO.updateGame(new GameData(1, "me", "you", "name1", chessGame));
+
+        GameData found = gameDAO.findGame(1);
+
+        assertEquals(chessGame, found.game());
+    }
+
+    @Test
+    public void getGamesNegative() throws Exception {
+        SQLGameDAO gameDAO = new SQLGameDAO();
+        gameDAO.deleteAll();
+
+        java.util.HashMap<Integer, GameData> games = gameDAO.getGames();
+
+        assertEquals(0, games.size());
+    }
+
+    @Test
+    public void getGamesPositive() throws Exception {
+        SQLGameDAO gameDAO = new SQLGameDAO();
+        gameDAO.deleteAll();
+
+        ChessGame chessGame = new ChessGame();
+        GameData game = new GameData(1, "me", "you", "name1", chessGame);
+        gameDAO.addGame(game);
+        GameData game2 = new GameData(2, "me", "you", "name2", new ChessGame());
+        gameDAO.addGame(game2);
+
+        java.util.HashMap<Integer, GameData> games = gameDAO.getGames();
+
+        assertNotNull(games);
+        assertEquals(2, games.size());
+    }
 
     @Test
     public void deleteAllGamesPositive() throws Exception {
@@ -65,7 +124,7 @@ public class DatabaseUnitTests {
         gameDAO.deleteAll();
 
         ChessGame chessGame = new ChessGame();
-        GameData game = new GameData(1, "me", "you", "name1", new ChessGame());
+        GameData game = new GameData(1, "me", "you", "name1", chessGame);
         gameDAO.addGame(game);
         GameData game2 = new GameData(2, "me", "you", "name2", new ChessGame());
         gameDAO.addGame(game2);
@@ -82,7 +141,7 @@ public class DatabaseUnitTests {
         gameDAO.deleteAll();
 
         ChessGame chessGame = new ChessGame();
-        GameData game = new GameData(1, "me", "you", "name1", new ChessGame());
+        GameData game = new GameData(1, "me", "you", "name1", chessGame);
         gameDAO.addGame(game);
 
         GameData found = gameDAO.findGame(game.gameID());
