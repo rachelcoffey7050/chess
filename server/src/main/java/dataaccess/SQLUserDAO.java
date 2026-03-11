@@ -12,6 +12,9 @@ import java.sql.SQLException;
 
 public class SQLUserDAO implements UserDAO {
 
+
+
+
     public void addUser(UserData user) throws DataAccessException {
         var statement = "INSERT INTO users (username, json) VALUES (?, ?)";
         String json = new Gson().toJson(user);

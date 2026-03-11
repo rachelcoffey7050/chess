@@ -17,7 +17,7 @@ public class SQLGameDAO implements GameDAO{
     public Integer addGame(GameData game) throws DataAccessException, ResponseException {
         var statement = "INSERT INTO games (id, json) VALUES (?, ?)";
         String json = new Gson().toJson(game);
-        Integer id = executeUpdate(statement, json);
+        Integer id = executeUpdate(statement, game.gameID(), json);
         return id;
     }
 
