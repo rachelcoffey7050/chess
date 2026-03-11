@@ -20,9 +20,14 @@ public class DeleteService {
     }
 
     public DeleteResult delete(DeleteRequest request) throws ResponseException, DataAccessException {
-        userDAO.deleteAll();
-        authDAO.deleteAll();
-        gameDAO.deleteAll();
+        try {
+            userDAO.deleteAll();
+            authDAO.deleteAll();
+            gameDAO.deleteAll();
+        }
+        catch (Exception e){
+            throw new ResponseException(ResponseException.Code.ServerError, String.format("Error: Unable to delete: %s", e.getMessage()));
+        }
         return new DeleteResult();
     }
 }

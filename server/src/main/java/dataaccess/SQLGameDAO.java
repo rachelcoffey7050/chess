@@ -1,7 +1,6 @@
 package dataaccess;
 
 import com.google.gson.Gson;
-import model.AuthData;
 import model.GameData;
 import service.exceptions.ResponseException;
 
@@ -25,7 +24,7 @@ public class SQLGameDAO implements GameDAO{
     public HashMap<Integer, GameData> getGames() throws ResponseException {
         var result = new HashMap<Integer, GameData>();
         try (Connection conn = DatabaseManager.getConnection()) {
-            var statement = "SELECT id, json FROM pet";
+            var statement = "SELECT id, json FROM games";
             try (PreparedStatement ps = conn.prepareStatement(statement)) {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -35,7 +34,7 @@ public class SQLGameDAO implements GameDAO{
                 }
             }
         } catch (Exception e) {
-            throw new ResponseException(ResponseException.Code.ServerError, String.format("Unable to read data: %s", e.getMessage()));
+            throw new ResponseException(ResponseException.Code.ServerError, String.format("Error: Unable to read data: %s", e.getMessage()));
         }
         return result;
     }
@@ -52,7 +51,7 @@ public class SQLGameDAO implements GameDAO{
                 }
             }
         } catch (Exception e) {
-            throw new ResponseException(ResponseException.Code.ServerError, String.format("Unable to read data: %s", e.getMessage()));
+            throw new ResponseException(ResponseException.Code.ServerError, String.format("Error: Unable to read data: %s", e.getMessage()));
         }
         return null;
     }
@@ -62,7 +61,7 @@ public class SQLGameDAO implements GameDAO{
         executeUpdate(statement, gameData.gameID());
         var statement2 = "INSERT INTO games (id, json) VALUES (?, ?)";
         String json = new Gson().toJson(gameData);
-        Integer id = executeUpdate(statement2, json);
+        executeUpdate(statement2, gameData.gameID(), json);
     }
 
     private GameData readGame(ResultSet rs) throws SQLException {
