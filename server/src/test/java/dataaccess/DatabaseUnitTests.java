@@ -1,12 +1,8 @@
-package database;
+package dataaccess;
 
 import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPosition;
-import dataaccess.DataAccessException;
-import dataaccess.SQLAuthDAO;
-import dataaccess.SQLGameDAO;
-import dataaccess.SQLUserDAO;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
