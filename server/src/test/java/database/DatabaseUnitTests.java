@@ -1,4 +1,4 @@
-package Database;
+package database;
 
 import chess.ChessGame;
 import chess.ChessMove;
@@ -11,7 +11,6 @@ import model.AuthData;
 import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.Test;
-import service.exceptions.ResponseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -101,14 +100,12 @@ public class DatabaseUnitTests {
 
         GameData game = new GameData(450, "me", "you", "name1", new ChessGame());
         gameDAO.addGame(game);
-        GameData game2 = new GameData(90, "me", "you", "name1", new ChessGame());
-        gameDAO.addGame(game2);
 
         GameData game1 = gameDAO.findGame(1);
-        GameData game_ = gameDAO.findGame(450);
+        GameData game2 = gameDAO.findGame(450);
 
         assertNotNull(game1);
-        assertNull(game_);
+        assertNull(game2);
     }
 
     @Test
