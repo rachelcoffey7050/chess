@@ -31,7 +31,7 @@ public class LoginService {
         }
         UserData user = new UserData(request.username(), request.password(), "filler-email");
         UserData newUser = userDAO.findUser(user);
-        if (newUser == null || BCrypt.checkpw(request.password(), newUser.password())) {
+        if (newUser == null || !BCrypt.checkpw(request.password(), newUser.password())) {
             throw new UnauthorizedException("Error: unauthorized");
         }
 

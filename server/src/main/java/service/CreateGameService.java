@@ -33,7 +33,7 @@ public class CreateGameService {
             throw new UnauthorizedException("Error: unauthorized access");
         }
 
-        GameData newGame = new GameData(403, null, null, gameName, new ChessGame());
+        GameData newGame = new GameData(450, null, null, gameName, new ChessGame());
         Integer gameID = gameDAO.addGame(newGame);
         return new CreateResult(gameID);
     }

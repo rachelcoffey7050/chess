@@ -1,6 +1,7 @@
 package dataaccess;
 
 import model.AuthData;
+import model.GameData;
 import model.UserData;
 import service.exceptions.ResponseException;
 
@@ -15,7 +16,7 @@ import static java.sql.Types.NULL;
 public class DatabaseCreator {
 
 
-    public static int executeUpdate(String statement, Object... params) throws ResponseException {
+    public static Integer executeUpdate(String statement, Object... params) throws ResponseException {
         try (Connection conn = DatabaseManager.getConnection()) {
             try (PreparedStatement ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
                 for (int i = 0; i < params.length; i++) {
@@ -24,6 +25,7 @@ public class DatabaseCreator {
                     else if (param instanceof Integer p) ps.setInt(i + 1, p);
                     else if (param instanceof UserData p) ps.setString(i + 1, p.toString());
                     else if (param instanceof AuthData p) ps.setString(i + 1, p.toString());
+                    else if (param instanceof GameData p) ps.setString(i+1, p.toString());
                     else if (param == null) ps.setNull(i + 1, NULL);
                 }
                 ps.executeUpdate();
@@ -44,7 +46,7 @@ public class DatabaseCreator {
         String[] createStatements = {
                 """
             CREATE TABLE IF NOT EXISTS  games (
-              `id` int NOT NULL AUTO_INCREMENT,
+              `id` INT NOT NULL AUTO_INCREMENT,
               `json` TEXT DEFAULT NULL,
               PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

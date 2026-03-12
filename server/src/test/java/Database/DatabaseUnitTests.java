@@ -99,13 +99,16 @@ public class DatabaseUnitTests {
         SQLGameDAO gameDAO = new SQLGameDAO();
         gameDAO.deleteAll();
 
-        GameData game = new GameData(1, "me", "you", "name1", new ChessGame());
+        GameData game = new GameData(450, "me", "you", "name1", new ChessGame());
         gameDAO.addGame(game);
-        GameData game2 = new GameData(1, "me", "you", "name1", new ChessGame());
+        GameData game2 = new GameData(90, "me", "you", "name1", new ChessGame());
+        gameDAO.addGame(game2);
 
-        gameDAO.findGame(game.gameID());
+        GameData game1 = gameDAO.findGame(1);
+        GameData game_ = gameDAO.findGame(450);
 
-        assertThrows(ResponseException.class, () -> gameDAO.addGame(game2));
+        assertNotNull(game1);
+        assertNull(game_);
     }
 
     @Test

@@ -30,6 +30,7 @@ public class ListService {
         }
         HashMap<Integer, GameData> games = gameDAO.getGames();
         List<GameData> listData = new ArrayList<>(games.values());
+        System.out.println(listData);
         return new ListResult(listData);
     }
 }

@@ -15,9 +15,11 @@ import static dataaccess.DatabaseCreator.executeUpdate;
 public class SQLGameDAO implements GameDAO{
 
     public Integer addGame(GameData game) throws DataAccessException, ResponseException {
-        var statement = "INSERT INTO games (id, json) VALUES (?, ?)";
+        var statement = "INSERT INTO games (json) VALUES (?)";
         String json = new Gson().toJson(game);
-        Integer id = executeUpdate(statement, game.gameID(), json);
+        Integer id = executeUpdate(statement, json); //insert placeholder
+        GameData updated = new GameData(id, game.whiteUsername(), game.blackUsername(), game.gameName(), game.game());
+        updateGame(updated);
         return id;
     }
 
@@ -57,16 +59,17 @@ public class SQLGameDAO implements GameDAO{
     }
 
     public void updateGame(GameData gameData) throws ResponseException {
-        var statement = "DELETE FROM games WHERE id=?";
-        executeUpdate(statement, gameData.gameID());
-        var statement2 = "INSERT INTO games (id, json) VALUES (?, ?)";
+        var statement = "UPDATE games SET json=? WHERE id=?";
         String json = new Gson().toJson(gameData);
-        executeUpdate(statement2, gameData.gameID(), json);
+        executeUpdate(statement, json, gameData.gameID());
     }
 
     private GameData readGame(ResultSet rs) throws SQLException {
+        var id = rs.getInt("id");
         var json = rs.getString("json");
-        return new Gson().fromJson(json, GameData.class);
+        GameData newGame = new Gson().fromJson(json, GameData.class);
+        // pet shop updated the id but to do that I'd have to change the way it is implemented
+        return newGame;
     }
 
     public void deleteAll() throws ResponseException {
