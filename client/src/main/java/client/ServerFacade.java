@@ -3,7 +3,7 @@ package client;
 import com.google.gson.Gson;
 import service.exceptions.ResponseException;
 import model.*;
-import service.requestandresult.ListResult;
+import service.requestandresult.*;
 
 import java.net.*;
 import java.net.http.*;
@@ -19,25 +19,41 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public UserData register(UserData user) throws ResponseException {
+    public RegisterResult register(RegisterRequest user) throws ResponseException {
         var request = buildRequest("POST", "/user", user, null);
         var response = sendRequest(request);
-        return handleResponse(response, UserData.class);
+        return handleResponse(response, RegisterResult.class);
     }
 
-    //what is the session that needs to be deleted? Found through authtoken? var path = String.format("/pet/%s", id);
+    public CreateResult createGame(CreateRequest req, String token) throws ResponseException {
+        var request = buildRequest("POST", "/game", req, token);
+        var response = sendRequest(request);
+        return handleResponse(response, CreateResult.class);
+    }
+
+    public JoinResult joinGame(JoinRequest req, String token) throws ResponseException {
+        var request = buildRequest("PUT", "/game", req, token);
+        var response = sendRequest(request);
+        return handleResponse(response, JoinResult.class);
+    }
+
+    public LoginResult login(LoginRequest req, String token) throws ResponseException {
+        var request = buildRequest("POST", "/session", req, token);
+        var response = sendRequest(request);
+        return handleResponse(response, LoginResult.class);
+    }
+
     public void logout(String token) throws ResponseException {
         var request = buildRequest("DELETE", "/session", null, token);
         var response = sendRequest(request);
         handleResponse(response, null);
     }
 
-    public void delete() throws ResponseException {
-        var request = buildRequest("DELETE", "/db", null, null);
+    public void delete(DeleteRequest req) throws ResponseException {
+        var request = buildRequest("DELETE", "/db", req, null);
         sendRequest(request);
     }
 
-    //this might be the wrong thing to return
     public ListResult listGames(String token) throws ResponseException {
         var request = buildRequest("GET", "/game", null, token);
         var response = sendRequest(request);
@@ -52,7 +68,7 @@ public class ServerFacade {
             request.setHeader("Content-Type", "application/json");
         }
         else if (authToken != null) {
-            request.header("Authorization", authToken);
+            request.setHeader("Authorization", authToken);
         }
         return request.build();
     }
