@@ -9,8 +9,6 @@ import chess.exceptions.ResponseException;
 
 import java.util.Scanner;
 
-import static sun.security.jgss.GSSUtil.login;
-
 public class PreLogin {
 
     private final ServerFacade facade;
