@@ -48,16 +48,26 @@ public class BoardPrinter {
 
         out.print(EMPTY + " " + EMPTY);
         out.print(EMPTY + "h" + EMPTY  + EMPTY + "g" + EMPTY + EMPTY + "f" + EMPTY + EMPTY + "e" + EMPTY + EMPTY
-                    + "d" + EMPTY + EMPTY + "c" + EMPTY + EMPTY + "b" + EMPTY + EMPTY + "a");
-        out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS));
+                    + "d" + EMPTY + EMPTY + "c" + EMPTY + EMPTY + "b" + EMPTY + EMPTY + "a" + EMPTY);
+        out.print(EMPTY + " " + EMPTY);
         out.print(RESET_BG_COLOR);
         out.print("\n");
     }
 
     private static void drawBlackBoard(PrintStream out, ChessGame game){
         for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i++){
+                String BG_COLOR_ONE;
+                String BG_COLOR_TWO;
+                if (i%2==0){
+                    BG_COLOR_ONE = BG_DARK_BROWN;
+                    BG_COLOR_TWO = BG_LIGHT_BROWN;
+                } else {
+                    BG_COLOR_ONE = BG_LIGHT_BROWN;
+                    BG_COLOR_TWO = BG_DARK_BROWN;
+                }
+
             printEdge(i, out);
-            printRow(out, i, game);
+            printRow(out, i, game, BG_COLOR_ONE, BG_COLOR_TWO);
             printEdge(i, out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
@@ -66,22 +76,32 @@ public class BoardPrinter {
 
     private static void drawWhiteBoard(PrintStream out, ChessGame game){
         for (int i=8; i > 0; i--){
+            String BG_COLOR_1;
+            String BG_COLOR_2;
+            if (i%2==0){
+                BG_COLOR_1 = BG_DARK_BROWN;
+                BG_COLOR_2 = BG_LIGHT_BROWN;
+            } else {
+                BG_COLOR_2 = BG_DARK_BROWN;
+                BG_COLOR_1 = BG_LIGHT_BROWN;
+            }
+
             printEdge(i, out);
-            printRow(out, i, game);
+            printRow(out, i, game, BG_COLOR_1, BG_COLOR_2);
             printEdge(i, out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
         }
     }
 
-    private static void printRow(PrintStream out, int row, ChessGame game){
+    private static void printRow(PrintStream out, int row, ChessGame game, String color1, String color2){
         for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i+=2){
-            out.print(BG_LIGHT_BROWN);
+            out.print(color1);
             String piece = getPiece(game.board.getPiece(new ChessPosition(row, i)), out);
             out.print(EMPTY);
             out.print(piece);
             out.print(EMPTY);
-            out.print(BG_DARK_BROWN);
+            out.print(color2);
             String pieceSecond = getPiece(game.board.getPiece(new ChessPosition(row, i+1)), out);
             out.print(EMPTY);
             out.print(pieceSecond);
