@@ -34,6 +34,9 @@ public class BoardPrinter {
         out.print(ERASE_SCREEN);
 
         drawTopAndBottom(out, game1);
+        if (color== ChessGame.TeamColor.WHITE){
+            drawWhiteBoard(out, game1);
+        } else {drawBlackBoard(out, game1);}
 
     }
 
@@ -47,14 +50,19 @@ public class BoardPrinter {
         out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS));
     }
 
-    private static void drawBoard(PrintStream out, ChessGame game){
+    private static void drawBlackBoard(PrintStream out, ChessGame game){
         for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i++){
-            out.print(SET_BG_COLOR_LIGHT_GREY);
-            out.print(SET_TEXT_COLOR_BLACK);
-            out.print(EMPTY);
-            out.print(i);
-            out.print(EMPTY);
+            printEdge(i, out);
             printRow(out, i, game);
+            printEdge(i, out);
+        }
+    }
+
+    private static void drawWhiteBoard(PrintStream out, ChessGame game){
+        for (int i=8; i > 0; i--){
+            printEdge(i, out);
+            printRow(out, i, game);
+            printEdge(i, out);
         }
     }
 
@@ -71,6 +79,14 @@ public class BoardPrinter {
             out.print(pieceSecond);
             out.print(EMPTY);
         }
+    }
+
+    private static void printEdge(int i, PrintStream out){
+        out.print(SET_BG_COLOR_LIGHT_GREY);
+        out.print(SET_TEXT_COLOR_BLACK);
+        out.print(EMPTY);
+        out.print(i);
+        out.print(EMPTY);
     }
 
     private static String getPiece(ChessPiece chessPiece, PrintStream out){
