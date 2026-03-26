@@ -37,12 +37,12 @@ public class PostLogin {
 
         int n = sc.nextInt();
 
-        if (n == 1) help();
-        else if (n == 2) logout();
-        else if (n == 3) createGame();
-        else if (n == 4) listGames();
-        else if (n == 5) playGame();
-        else if (n == 6) observe();
+        if (n == 1) { help();}
+        else if (n == 2) {logout();}
+        else if (n == 3) {createGame();}
+        else if (n == 4) {listGames();}
+        else if (n == 5) {playGame();}
+        else if (n == 6) {observe();}
         else {
             System.out.println("Invalid Input");
         }

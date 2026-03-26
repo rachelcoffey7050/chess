@@ -64,27 +64,27 @@ public class BoardPrinter {
 
     private static void drawBlackBoard(PrintStream out, ChessGame game){
         for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i++){
-            String BG_COLOR_ONE;
-            String BG_COLOR_TWO;
+            String bgColorOne;
+            String bgColorTWO;
             if (i%2==0){
-                BG_COLOR_ONE = BG_DARK_BROWN;
-                BG_COLOR_TWO = BG_LIGHT_BROWN;
+                bgColorOne = BG_DARK_BROWN;
+                bgColorTWO = BG_LIGHT_BROWN;
             } else {
-                BG_COLOR_ONE = BG_LIGHT_BROWN;
-                BG_COLOR_TWO = BG_DARK_BROWN;
+                bgColorOne = BG_LIGHT_BROWN;
+                bgColorTWO = BG_DARK_BROWN;
             }
             printBlankEdge(out);
-            printBlankRow(out, BG_COLOR_ONE, BG_COLOR_TWO);
+            printBlankRow(out, bgColorOne, bgColorTWO);
             printBlankEdge(out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
             printEdge(i, out);
-            printRow(out, i, game, BG_COLOR_ONE, BG_COLOR_TWO);
+            printRow(out, i, game, bgColorOne, bgColorTWO);
             printEdge(i, out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
             printBlankEdge(out);
-            printBlankRow(out, BG_COLOR_ONE, BG_COLOR_TWO);
+            printBlankRow(out, bgColorOne, bgColorTWO);
             printBlankEdge(out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
@@ -114,28 +114,28 @@ public class BoardPrinter {
 
     private static void drawWhiteBoard(PrintStream out, ChessGame game){
         for (int i=8; i > 0; i--){
-            String BG_COLOR_1;
-            String BG_COLOR_2;
+            String bgColor1;
+            String bgColor2;
             if (i%2==0){
-                BG_COLOR_1 = BG_DARK_BROWN;
-                BG_COLOR_2 = BG_LIGHT_BROWN;
+                bgColor1 = BG_DARK_BROWN;
+                bgColor2 = BG_LIGHT_BROWN;
             } else {
-                BG_COLOR_2 = BG_DARK_BROWN;
-                BG_COLOR_1 = BG_LIGHT_BROWN;
+                bgColor2 = BG_DARK_BROWN;
+                bgColor1 = BG_LIGHT_BROWN;
             }
 
             printBlankEdge(out);
-            printBlankRow(out, BG_COLOR_1, BG_COLOR_2);
+            printBlankRow(out, bgColor1, bgColor2);
             printBlankEdge(out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
             printEdge(i, out);
-            printRow(out, i, game, BG_COLOR_1, BG_COLOR_2);
+            printRow(out, i, game, bgColor1, bgColor2);
             printEdge(i, out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
             printBlankEdge(out);
-            printBlankRow(out, BG_COLOR_1, BG_COLOR_2);
+            printBlankRow(out, bgColor1, bgColor2);
             printBlankEdge(out);
             out.print(RESET_BG_COLOR);
             out.print("\n");

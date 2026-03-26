@@ -9,6 +9,8 @@ import chess.exceptions.ResponseException;
 
 import java.util.Scanner;
 
+import static sun.security.jgss.GSSUtil.login;
+
 public class PreLogin {
 
     private final ServerFacade facade;
@@ -31,10 +33,10 @@ public class PreLogin {
 
         int n = sc.nextInt();
 
-        if (n == 1) help();
-        else if (n == 2) quit();
-        else if (n==3) login();
-        else if (n == 4) register();
+        if (n == 1) {help();}
+        else if (n == 2) {quit();}
+        else if (n==3) {login();}
+        else if (n == 4) {register();}
         else {
             System.out.println("Invalid Input");
         }
