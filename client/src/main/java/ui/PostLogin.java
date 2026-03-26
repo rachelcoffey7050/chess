@@ -26,6 +26,13 @@ public class PostLogin {
 
     public void runPostLogin(){
         Scanner sc = new Scanner(System.in);
+
+        if (!sc.hasNextInt()) {
+            System.out.println("Invalid input: Please type a number");
+            sc.nextLine();
+            return;
+        }
+
         int n = sc.nextInt();
 
         if (n == 1) help();
@@ -132,7 +139,7 @@ public class PostLogin {
 
     private void printGames(){
         for (GameData current : gameList) {
-            System.out.printf("\nGame ID: %d%n", current.gameID());
+            System.out.printf("\nGame Number: %d%n", current.gameID());
             System.out.printf("Title: %s%n", current.gameName());
             System.out.printf("White User: %s%n", current.whiteUsername());
             System.out.printf("Black User: %s%n", current.blackUsername());

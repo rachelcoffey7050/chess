@@ -22,6 +22,13 @@ public class PreLogin {
 
     public void runPreLogin(){
         Scanner sc = new Scanner(System.in);
+
+        if (!sc.hasNextInt()) {
+            System.out.println("Invalid input: Please type a number");
+            sc.nextLine();
+            return;
+        }
+
         int n = sc.nextInt();
 
         if (n == 1) help();

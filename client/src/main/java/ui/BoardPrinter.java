@@ -33,22 +33,30 @@ public class BoardPrinter {
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         out.print(ERASE_SCREEN);
 
-        drawTopAndBottom(out, game1);
+        String header;
         if (color== ChessGame.TeamColor.BLACK){
+            header = EMPTY + "h" + EMPTY  + EMPTY + "g" + EMPTY + EMPTY + "f" + EMPTY + EMPTY + "e" + EMPTY + EMPTY
+                    + "d" + EMPTY + EMPTY + "c" + EMPTY + EMPTY + "b" + EMPTY + EMPTY + "a" + EMPTY;
+            drawTopAndBottom(out, game1, header);
             drawBlackBoard(out, game1);
-        } else {drawWhiteBoard(out, game1);}
-        drawTopAndBottom(out, game1);
+            drawTopAndBottom(out, game1, header);
+        } else {
+            header = EMPTY + "a" + EMPTY  + EMPTY + "b" + EMPTY + EMPTY + "c" + EMPTY + EMPTY + "d" + EMPTY + EMPTY
+                    + "e" + EMPTY + EMPTY + "f" + EMPTY + EMPTY + "g" + EMPTY + EMPTY + "h" + EMPTY;
+            drawTopAndBottom(out, game1, header);
+            drawWhiteBoard(out, game1);
+            drawTopAndBottom(out, game1, header);
+        }
         out.print(RESET_BG_COLOR);
         out.print(RESET_TEXT_COLOR);
     }
 
-    private static void drawTopAndBottom(PrintStream out, ChessGame game) {
+    private static void drawTopAndBottom(PrintStream out, ChessGame game, String header) {
         out.print(SET_BG_COLOR_LIGHT_GREY);
         out.print(SET_TEXT_COLOR_BLACK);
 
         out.print(EMPTY + " " + EMPTY);
-        out.print(EMPTY + "h" + EMPTY  + EMPTY + "g" + EMPTY + EMPTY + "f" + EMPTY + EMPTY + "e" + EMPTY + EMPTY
-                    + "d" + EMPTY + EMPTY + "c" + EMPTY + EMPTY + "b" + EMPTY + EMPTY + "a" + EMPTY);
+        out.print(header);
         out.print(EMPTY + " " + EMPTY);
         out.print(RESET_BG_COLOR);
         out.print("\n");
