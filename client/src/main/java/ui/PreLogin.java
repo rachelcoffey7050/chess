@@ -15,9 +15,9 @@ public class PreLogin {
     public String authToken;
     public Boolean run;
 
-    public PreLogin(ServerFacade facade){
+    public PreLogin(ServerFacade facade, String authToken){
         this.facade = facade;
-        this.authToken = null;
+        this.authToken = authToken;
     }
 
     public void runPreLogin(){
@@ -68,6 +68,7 @@ public class PreLogin {
             String email = sc.nextLine();
             RegisterResult result = facade.register(new RegisterRequest(username, password, email));
             authToken = result.authToken();
+            System.out.println("You are logged in! Type 1 for instructions");
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
         }

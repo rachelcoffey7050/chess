@@ -37,18 +37,21 @@ public class BoardPrinter {
         if (color== ChessGame.TeamColor.WHITE){
             drawWhiteBoard(out, game1);
         } else {drawBlackBoard(out, game1);}
+        drawTopAndBottom(out, game1);
         out.print(RESET_BG_COLOR);
         out.print(RESET_TEXT_COLOR);
     }
 
     private static void drawTopAndBottom(PrintStream out, ChessGame game) {
-        String headerText = "";
         out.print(SET_BG_COLOR_LIGHT_GREY);
         out.print(SET_TEXT_COLOR_BLACK);
 
+        out.print(EMPTY + " " + EMPTY);
+        out.print(EMPTY + "h" + EMPTY  + EMPTY + "g" + EMPTY + EMPTY + "f" + EMPTY + EMPTY + "e" + EMPTY + EMPTY
+                    + "d" + EMPTY + EMPTY + "c" + EMPTY + EMPTY + "b" + EMPTY + EMPTY + "a");
         out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS));
-        out.print(" h  g  f  e  d  c  b  a ");
-        out.print(EMPTY.repeat(SQUARE_SIZE_IN_PADDED_CHARS));
+        out.print(RESET_BG_COLOR);
+        out.print("\n");
     }
 
     private static void drawBlackBoard(PrintStream out, ChessGame game){
@@ -56,6 +59,8 @@ public class BoardPrinter {
             printEdge(i, out);
             printRow(out, i, game);
             printEdge(i, out);
+            out.print(RESET_BG_COLOR);
+            out.print("\n");
         }
     }
 
@@ -64,18 +69,20 @@ public class BoardPrinter {
             printEdge(i, out);
             printRow(out, i, game);
             printEdge(i, out);
+            out.print(RESET_BG_COLOR);
+            out.print("\n");
         }
     }
 
     private static void printRow(PrintStream out, int row, ChessGame game){
-        for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i++){
+        for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i+=2){
             out.print(BG_LIGHT_BROWN);
             String piece = getPiece(game.board.getPiece(new ChessPosition(row, i)), out);
             out.print(EMPTY);
             out.print(piece);
             out.print(EMPTY);
             out.print(BG_DARK_BROWN);
-            String pieceSecond = getPiece(game.board.getPiece(new ChessPosition(row, i)), out);
+            String pieceSecond = getPiece(game.board.getPiece(new ChessPosition(row, i+1)), out);
             out.print(EMPTY);
             out.print(pieceSecond);
             out.print(EMPTY);

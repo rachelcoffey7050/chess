@@ -40,13 +40,14 @@ public class PostLogin {
     }
 
     private void help(){
-        System.out.println("1. Help\n2. Logout\n3. Create Game\n4. List Games\n5. Play Game\n6. Observe Game");
+        System.out.println("Menu:\n1. Help\n2. Logout\n3. Create Game\n4. List Games\n5. Play Game\n6. Observe Game");
     }
 
     private void logout(){
         try {
             facade.logout(authToken);
             authToken = null;
+            System.out.println("You are logged out! Type 1 for instructions");
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
         }
@@ -61,6 +62,7 @@ public class PostLogin {
             facade.createGame(request, authToken);
             ListResult result = facade.listGames(authToken);
             gameList = result.games();
+            System.out.println("Game Created!");
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
         }
@@ -82,6 +84,7 @@ public class PostLogin {
             Scanner sc = new Scanner(System.in);
             System.out.println("Game Number:");
             Integer gameID = sc.nextInt();
+            sc.nextLine();
             System.out.println("Player Color (Type W/B):");
             String colorString = sc.nextLine();
             ChessGame.TeamColor color;
@@ -129,14 +132,11 @@ public class PostLogin {
 
     private void printGames(){
         for (GameData current : gameList) {
-            System.out.println("Game ID: ");
-            System.out.println(current.gameID());
-            System.out.println("Title: ");
-            System.out.println(current.gameName());
-            System.out.println("White User: ");
-            System.out.println(current.whiteUsername());
-            System.out.println("Black User: ");
-            System.out.println(current.blackUsername());
+            System.out.printf("\nGame ID: %d%n", current.gameID());
+            System.out.printf("Title: %s%n", current.gameName());
+            System.out.printf("White User: %s%n", current.whiteUsername());
+            System.out.printf("Black User: %s%n", current.blackUsername());
+
         }
     }
 }
