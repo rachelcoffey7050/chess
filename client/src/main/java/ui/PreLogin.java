@@ -12,7 +12,8 @@ import java.util.Scanner;
 public class PreLogin {
 
     private final ServerFacade facade;
-    private String authToken;
+    public String authToken;
+    public Boolean run;
 
     public PreLogin(ServerFacade facade){
         this.facade = facade;
@@ -20,7 +21,6 @@ public class PreLogin {
     }
 
     public void runPreLogin(){
-        System.out.println("Welcome to Chess. Type 1 to get started");
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
 
@@ -34,7 +34,7 @@ public class PreLogin {
     }
 
     private void help(){
-        System.out.println("1. Help\n2. Quit\n3. Login\n4. Register");
+        System.out.println("Menu:\n1. Help\n2. Quit\n3. Login\n4. Register");
     }
 
     private void quit(){
@@ -51,6 +51,7 @@ public class PreLogin {
             String password = sc.nextLine();
             LoginResult result = facade.login(new LoginRequest(username, password), authToken);
             authToken = result.authToken();
+            System.out.println("You are logged in! Type 1 for instructions");
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
         }

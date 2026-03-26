@@ -37,7 +37,8 @@ public class BoardPrinter {
         if (color== ChessGame.TeamColor.WHITE){
             drawWhiteBoard(out, game1);
         } else {drawBlackBoard(out, game1);}
-
+        out.print(RESET_BG_COLOR);
+        out.print(RESET_TEXT_COLOR);
     }
 
     private static void drawTopAndBottom(PrintStream out, ChessGame game) {

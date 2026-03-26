@@ -14,18 +14,17 @@ import java.util.Scanner;
 public class PostLogin {
 
     private ServerFacade facade;
-    private String authToken;
+    public String authToken;
     private List<GameData> gameList = new ArrayList<>();
 
 
-    public void PreLogin(ServerFacade facade, String authToken){
+    public PostLogin(ServerFacade facade, String authToken){
         this.facade = facade;
         this.authToken = authToken;
         this.gameList = null;
     }
 
     public void runPostLogin(){
-        System.out.println("You are logged in! Type 1 to get started");
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
 
@@ -132,11 +131,11 @@ public class PostLogin {
         for (GameData current : gameList) {
             System.out.println("Game ID: ");
             System.out.println(current.gameID());
-            System.out.println("\nTitle: ");
+            System.out.println("Title: ");
             System.out.println(current.gameName());
-            System.out.println("\nWhite User: ");
+            System.out.println("White User: ");
             System.out.println(current.whiteUsername());
-            System.out.println("\nBlack User: ");
+            System.out.println("Black User: ");
             System.out.println(current.blackUsername());
         }
     }
