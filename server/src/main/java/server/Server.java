@@ -113,7 +113,8 @@ public class Server {
 
     private void exceptionHandler(Exception ex, Context ctx){
         ctx.status(500);
-        ctx.json(Map.of("message", ex.getMessage()));
+        ctx.json(Map.of("message", ex.getMessage(),
+                "code", "SERVER_ERROR"));
     }
 
     private void deleteHandler(Context ctx) throws Exception {

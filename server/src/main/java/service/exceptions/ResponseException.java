@@ -21,6 +21,8 @@ public class ResponseException extends Exception {
         this.code = code;
     }
 
+    public Code getCode() { return code; }
+
     public String toJson() {
         return new Gson().toJson(Map.of("message", getMessage(), "status", code));
     }

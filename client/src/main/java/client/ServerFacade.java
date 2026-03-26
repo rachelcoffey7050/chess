@@ -67,7 +67,7 @@ public class ServerFacade {
         if (body != null) {
             request.setHeader("Content-Type", "application/json");
         }
-        else if (authToken != null) {
+        if (authToken != null) {
             request.setHeader("Authorization", authToken);
         }
         return request.build();
