@@ -1,10 +1,13 @@
-package client.ui;
+package ui;
 
 import chess.ChessGame;
 import client.ServerFacade;
+import model.GameData;
 import service.exceptions.ResponseException;
 import service.requestandresult.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -12,10 +15,13 @@ public class PostLogin {
 
     private ServerFacade facade;
     private String authToken;
+    private List<GameData> gameList = new ArrayList<>();
+
 
     public void PreLogin(ServerFacade facade, String authToken){
         this.facade = facade;
         this.authToken = authToken;
+        this.gameList = null;
     }
 
     public void runPostLogin(){
@@ -54,6 +60,8 @@ public class PostLogin {
             String gameName = sc.nextLine();
             CreateRequest request = new CreateRequest(gameName, authToken);
             facade.createGame(request, authToken);
+            ListResult result = facade.listGames(authToken);
+            gameList = result.games();
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
         }
@@ -63,7 +71,8 @@ public class PostLogin {
         try {
             ListResult result = facade.listGames(authToken);
             System.out.println("Games:");
-            System.out.println(result);
+            System.out.println(result.games());
+            gameList = result.games();
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
         }
@@ -84,15 +93,39 @@ public class PostLogin {
             }
             JoinRequest request = new JoinRequest(color, gameID, authToken);
             facade.joinGame(request, authToken);
-            //print game/transition to play ui
+            GameData game = getCorrectGame(gameID);
+            BoardPrinter printer = new BoardPrinter(game, color);
+            printer.printBoard();
         } catch (ResponseException e){
             System.out.println(e.getMessage());
         }
     }
-    private void observe(){
+    private void observe() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Game Number:");
         Integer gameID = sc.nextInt();
-        //print game/transition to play ui
+        GameData game = getCorrectGame(gameID);
+        BoardPrinter printer = new BoardPrinter(game, null);
+        printer.printBoard();
+    }
+
+    private GameData getCorrectGame(Integer gameID){
+        try {
+            GameData game = null;
+            if (gameList == null) {
+                ListResult result = facade.listGames(authToken);
+                gameList = result.games();
+            }
+            for (int i = 0; i < gameList.size(); i++){
+                GameData current = gameList.get(i);
+                if (current.gameID() == gameID) {
+                    game = current;
+                }
+            }
+            return game;
+        } catch (ResponseException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }
