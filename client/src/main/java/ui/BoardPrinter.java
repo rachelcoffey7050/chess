@@ -34,9 +34,9 @@ public class BoardPrinter {
         out.print(ERASE_SCREEN);
 
         drawTopAndBottom(out, game1);
-        if (color== ChessGame.TeamColor.WHITE){
-            drawWhiteBoard(out, game1);
-        } else {drawBlackBoard(out, game1);}
+        if (color== ChessGame.TeamColor.BLACK){
+            drawBlackBoard(out, game1);
+        } else {drawWhiteBoard(out, game1);}
         drawTopAndBottom(out, game1);
         out.print(RESET_BG_COLOR);
         out.print(RESET_TEXT_COLOR);
@@ -56,21 +56,51 @@ public class BoardPrinter {
 
     private static void drawBlackBoard(PrintStream out, ChessGame game){
         for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i++){
-                String BG_COLOR_ONE;
-                String BG_COLOR_TWO;
-                if (i%2==0){
-                    BG_COLOR_ONE = BG_DARK_BROWN;
-                    BG_COLOR_TWO = BG_LIGHT_BROWN;
-                } else {
-                    BG_COLOR_ONE = BG_LIGHT_BROWN;
-                    BG_COLOR_TWO = BG_DARK_BROWN;
-                }
-
+            String BG_COLOR_ONE;
+            String BG_COLOR_TWO;
+            if (i%2==0){
+                BG_COLOR_ONE = BG_DARK_BROWN;
+                BG_COLOR_TWO = BG_LIGHT_BROWN;
+            } else {
+                BG_COLOR_ONE = BG_LIGHT_BROWN;
+                BG_COLOR_TWO = BG_DARK_BROWN;
+            }
+            printBlankEdge(out);
+            printBlankRow(out, BG_COLOR_ONE, BG_COLOR_TWO);
+            printBlankEdge(out);
+            out.print(RESET_BG_COLOR);
+            out.print("\n");
             printEdge(i, out);
             printRow(out, i, game, BG_COLOR_ONE, BG_COLOR_TWO);
             printEdge(i, out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
+            printBlankEdge(out);
+            printBlankRow(out, BG_COLOR_ONE, BG_COLOR_TWO);
+            printBlankEdge(out);
+            out.print(RESET_BG_COLOR);
+            out.print("\n");
+        }
+    }
+
+    private static void printBlankEdge(PrintStream out){
+        out.print(SET_BG_COLOR_LIGHT_GREY);
+        out.print(SET_TEXT_COLOR_BLACK);
+        out.print(EMPTY);
+        out.print(" ");
+        out.print(EMPTY);
+    }
+
+    private static void printBlankRow(PrintStream out, String color1, String color2){
+        for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i+=2){
+            out.print(color1);
+            out.print(EMPTY);
+            out.print(" ");
+            out.print(EMPTY);
+            out.print(color2);
+            out.print(EMPTY);
+            out.print(" ");
+            out.print(EMPTY);
         }
     }
 
@@ -86,9 +116,19 @@ public class BoardPrinter {
                 BG_COLOR_1 = BG_LIGHT_BROWN;
             }
 
+            printBlankEdge(out);
+            printBlankRow(out, BG_COLOR_1, BG_COLOR_2);
+            printBlankEdge(out);
+            out.print(RESET_BG_COLOR);
+            out.print("\n");
             printEdge(i, out);
             printRow(out, i, game, BG_COLOR_1, BG_COLOR_2);
             printEdge(i, out);
+            out.print(RESET_BG_COLOR);
+            out.print("\n");
+            printBlankEdge(out);
+            printBlankRow(out, BG_COLOR_1, BG_COLOR_2);
+            printBlankEdge(out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
         }
