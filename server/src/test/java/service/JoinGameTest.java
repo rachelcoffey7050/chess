@@ -1,10 +1,10 @@
 package service;
 
 import chess.ChessGame;
+import chess.requestandresult.*;
 import dataaccess.*;
 import org.junit.jupiter.api.Test;
-import service.exceptions.AlreadyTakenException;
-import service.requestandresult.*;
+import chess.exceptions.AlreadyTakenException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

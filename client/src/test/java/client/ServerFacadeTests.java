@@ -1,11 +1,10 @@
 package client;
 
 import chess.ChessGame;
+import chess.requestandresult.*;
 import org.junit.jupiter.api.*;
 import server.Server;
-import service.exceptions.ResponseException;
-import service.requestandresult.*;
-import client.ServerFacade.*;
+import chess.exceptions.ResponseException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

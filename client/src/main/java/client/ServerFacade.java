@@ -1,9 +1,8 @@
 package client;
 
+import chess.exceptions.ResponseException;
+import chess.requestandresult.*;
 import com.google.gson.Gson;
-import service.exceptions.ResponseException;
-import model.*;
-import service.requestandresult.*;
 
 import java.net.*;
 import java.net.http.*;

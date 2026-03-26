@@ -1,7 +1,7 @@
 package dataaccess;
 
 import model.*;
-import service.exceptions.ResponseException;
+import chess.exceptions.ResponseException;
 
 public interface AuthDAO {
 

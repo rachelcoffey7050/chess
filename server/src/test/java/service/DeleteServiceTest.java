@@ -4,10 +4,8 @@ import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryGameDAO;
 import dataaccess.MemoryUserDAO;
 import org.junit.jupiter.api.Test;
-import service.requestandresult.DeleteRequest;
-import service.requestandresult.DeleteResult;
-import service.requestandresult.RegisterRequest;
-import service.requestandresult.RegisterResult;
+import chess.requestandresult.DeleteRequest;
+import chess.requestandresult.DeleteResult;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

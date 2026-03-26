@@ -1,9 +1,9 @@
 package service;
 
+import chess.requestandresult.*;
 import dataaccess.*;
 import org.junit.jupiter.api.Test;
-import service.exceptions.UnauthorizedException;
-import service.requestandresult.*;
+import chess.exceptions.UnauthorizedException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

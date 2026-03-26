@@ -4,12 +4,12 @@ import dataaccess.*;
 import model.AuthData;
 import model.UserData;
 import org.mindrot.jbcrypt.BCrypt;
-import service.exceptions.AlreadyTakenException;
-import service.exceptions.BadRequestException;
-import service.exceptions.ResponseException;
-import service.requestandresult.RegisterRequest;
-import service.requestandresult.RegisterResult;
-import dataaccess.UserDAO.*;
+import chess.exceptions.AlreadyTakenException;
+import chess.exceptions.BadRequestException;
+import chess.exceptions.ResponseException;
+import chess.requestandresult.RegisterRequest;
+import chess.requestandresult.RegisterResult;
+
 import java.util.UUID;
 
 public class RegisterService {

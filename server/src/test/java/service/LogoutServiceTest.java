@@ -1,12 +1,12 @@
 package service;
 
+import chess.requestandresult.*;
 import dataaccess.AuthDAO;
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryUserDAO;
 import dataaccess.UserDAO;
 import org.junit.jupiter.api.Test;
-import service.exceptions.UnauthorizedException;
-import service.requestandresult.*;
+import chess.exceptions.UnauthorizedException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

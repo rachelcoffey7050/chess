@@ -1,14 +1,13 @@
 package server;
 
 import chess.ChessGame;
+import chess.requestandresult.*;
 import dataaccess.*;
-import io.javalin.*;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import com.google.gson.Gson;
 import service.*;
-import service.exceptions.ResponseException;
-import service.requestandresult.*;
+import chess.exceptions.ResponseException;
 
 import java.util.Map;
 

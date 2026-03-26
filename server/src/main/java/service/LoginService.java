@@ -6,11 +6,11 @@ import dataaccess.UserDAO;
 import model.AuthData;
 import model.UserData;
 import org.mindrot.jbcrypt.BCrypt;
-import service.exceptions.BadRequestException;
-import service.exceptions.ResponseException;
-import service.exceptions.UnauthorizedException;
-import service.requestandresult.LoginRequest;
-import service.requestandresult.LoginResult;
+import chess.exceptions.BadRequestException;
+import chess.exceptions.ResponseException;
+import chess.exceptions.UnauthorizedException;
+import chess.requestandresult.LoginRequest;
+import chess.requestandresult.LoginResult;
 
 import java.util.UUID;
 

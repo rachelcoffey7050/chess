@@ -4,9 +4,9 @@ import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import dataaccess.UserDAO;
-import service.exceptions.ResponseException;
-import service.requestandresult.DeleteRequest;
-import service.requestandresult.DeleteResult;
+import chess.exceptions.ResponseException;
+import chess.requestandresult.DeleteRequest;
+import chess.requestandresult.DeleteResult;
 
 public class DeleteService {
     private final UserDAO userDAO;

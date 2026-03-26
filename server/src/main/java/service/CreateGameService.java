@@ -6,11 +6,11 @@ import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.AuthData;
 import model.GameData;
-import service.exceptions.BadRequestException;
-import service.exceptions.ResponseException;
-import service.exceptions.UnauthorizedException;
-import service.requestandresult.CreateRequest;
-import service.requestandresult.CreateResult;
+import chess.exceptions.BadRequestException;
+import chess.exceptions.ResponseException;
+import chess.exceptions.UnauthorizedException;
+import chess.requestandresult.CreateRequest;
+import chess.requestandresult.CreateResult;
 
 public class CreateGameService {
     private final GameDAO gameDAO;

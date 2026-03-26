@@ -1,11 +1,11 @@
 package ui;
 
 import client.ServerFacade;
-import service.exceptions.ResponseException;
-import service.requestandresult.LoginRequest;
-import service.requestandresult.LoginResult;
-import service.requestandresult.RegisterRequest;
-import service.requestandresult.RegisterResult;
+import chess.requestandresult.LoginRequest;
+import chess.requestandresult.LoginResult;
+import chess.requestandresult.RegisterRequest;
+import chess.requestandresult.RegisterResult;
+import chess.exceptions.ResponseException;
 
 import java.util.Scanner;
 

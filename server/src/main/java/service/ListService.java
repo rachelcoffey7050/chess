@@ -5,10 +5,10 @@ import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.AuthData;
 import model.GameData;
-import service.exceptions.ResponseException;
-import service.exceptions.UnauthorizedException;
-import service.requestandresult.ListRequest;
-import service.requestandresult.ListResult;
+import chess.exceptions.ResponseException;
+import chess.exceptions.UnauthorizedException;
+import chess.requestandresult.ListRequest;
+import chess.requestandresult.ListResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;

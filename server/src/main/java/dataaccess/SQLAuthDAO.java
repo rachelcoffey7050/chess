@@ -2,7 +2,7 @@ package dataaccess;
 
 import com.google.gson.Gson;
 import model.AuthData;
-import service.exceptions.ResponseException;
+import chess.exceptions.ResponseException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

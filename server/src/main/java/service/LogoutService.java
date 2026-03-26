@@ -3,10 +3,10 @@ package service;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import model.AuthData;
-import service.exceptions.ResponseException;
-import service.exceptions.UnauthorizedException;
-import service.requestandresult.LogoutRequest;
-import service.requestandresult.LogoutResult;
+import chess.exceptions.ResponseException;
+import chess.exceptions.UnauthorizedException;
+import chess.requestandresult.LogoutRequest;
+import chess.requestandresult.LogoutResult;
 
 public class LogoutService {
     private final AuthDAO authDAO;

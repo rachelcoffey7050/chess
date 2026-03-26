@@ -1,10 +1,9 @@
 package dataaccess;
 
 import model.GameData;
-import service.exceptions.ResponseException;
+import chess.exceptions.ResponseException;
 
 import java.util.HashMap;
-import java.util.List;
 
 public interface GameDAO {
 

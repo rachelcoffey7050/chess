@@ -1,6 +1,6 @@
-package service.exceptions;
+package chess.exceptions;
 
-import static service.exceptions.ResponseException.Code.Forbidden;
+import static chess.exceptions.ResponseException.Code.Forbidden;
 
 public class AlreadyTakenException extends ResponseException{
     public AlreadyTakenException(String message) {

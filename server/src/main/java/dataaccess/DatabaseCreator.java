@@ -3,7 +3,7 @@ package dataaccess;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
-import service.exceptions.ResponseException;
+import chess.exceptions.ResponseException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

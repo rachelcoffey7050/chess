@@ -5,11 +5,11 @@ import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryUserDAO;
 import dataaccess.UserDAO;
 import org.junit.jupiter.api.Test;
-import service.exceptions.UnauthorizedException;
-import service.requestandresult.LoginRequest;
-import service.requestandresult.LoginResult;
-import service.requestandresult.RegisterRequest;
-import service.requestandresult.RegisterResult;
+import chess.exceptions.UnauthorizedException;
+import chess.requestandresult.LoginRequest;
+import chess.requestandresult.LoginResult;
+import chess.requestandresult.RegisterRequest;
+import chess.requestandresult.RegisterResult;
 
 import static org.junit.jupiter.api.Assertions.*;
 

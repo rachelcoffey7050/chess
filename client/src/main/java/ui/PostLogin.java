@@ -1,10 +1,12 @@
 package ui;
 
 import chess.ChessGame;
+import chess.requestandresult.CreateRequest;
+import chess.requestandresult.JoinRequest;
+import chess.requestandresult.ListResult;
 import client.ServerFacade;
 import model.GameData;
-import service.exceptions.ResponseException;
-import service.requestandresult.*;
+import chess.exceptions.ResponseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +92,11 @@ public class PostLogin {
         try {
             Scanner sc = new Scanner(System.in);
             System.out.println("Game Number:");
+            if (!sc.hasNextInt()) {
+                System.out.println("Invalid input: Please type a number");
+                sc.nextLine();
+                return;
+            }
             Integer gameID = sc.nextInt();
             sc.nextLine();
             System.out.println("Player Color (Type W/B):");
@@ -103,6 +110,9 @@ public class PostLogin {
             JoinRequest request = new JoinRequest(color, gameID, authToken);
             facade.joinGame(request, authToken);
             GameData game = getCorrectGame(gameID);
+            if (game==null){
+                System.out.println("Game does not exist");
+            }
             BoardPrinter printer = new BoardPrinter(game, color);
             printer.printBoard();
         } catch (ResponseException e){
@@ -112,8 +122,17 @@ public class PostLogin {
     private void observe() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Game Number:");
+        if (!sc.hasNextInt()) {
+            System.out.println("Invalid input: Please type a number");
+            sc.nextLine();
+            return;
+        }
         Integer gameID = sc.nextInt();
         GameData game = getCorrectGame(gameID);
+        if (game==null){
+            System.out.println("Game does not exist");
+            return;
+        }
         BoardPrinter printer = new BoardPrinter(game, null);
         printer.printBoard();
     }

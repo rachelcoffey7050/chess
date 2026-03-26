@@ -1,11 +1,11 @@
-package service.exceptions;
+package chess.exceptions;
 
 import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResponseException extends Exception {
+public class ResponseException extends RuntimeException {
 
     public enum Code {
         BadRequest, // 400

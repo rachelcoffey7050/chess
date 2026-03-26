@@ -1,13 +1,11 @@
 package service;
 
 import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryGameDAO;
 import dataaccess.MemoryUserDAO;
-import dataaccess.UserDAO;
 import org.junit.jupiter.api.Test;
-import service.exceptions.AlreadyTakenException;
-import service.requestandresult.RegisterRequest;
-import service.requestandresult.RegisterResult;
+import chess.exceptions.AlreadyTakenException;
+import chess.requestandresult.RegisterRequest;
+import chess.requestandresult.RegisterResult;
 
 import static org.junit.jupiter.api.Assertions.*;
 

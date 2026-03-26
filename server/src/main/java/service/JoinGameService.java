@@ -6,12 +6,12 @@ import dataaccess.DataAccessException;
 import dataaccess.GameDAO;
 import model.AuthData;
 import model.GameData;
-import service.exceptions.AlreadyTakenException;
-import service.exceptions.BadRequestException;
-import service.exceptions.ResponseException;
-import service.exceptions.UnauthorizedException;
-import service.requestandresult.JoinRequest;
-import service.requestandresult.JoinResult;
+import chess.exceptions.AlreadyTakenException;
+import chess.exceptions.BadRequestException;
+import chess.exceptions.ResponseException;
+import chess.exceptions.UnauthorizedException;
+import chess.requestandresult.JoinRequest;
+import chess.requestandresult.JoinResult;
 
 public class JoinGameService {
     private final GameDAO gameDAO;
