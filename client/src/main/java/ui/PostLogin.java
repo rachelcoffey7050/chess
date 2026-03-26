@@ -71,8 +71,8 @@ public class PostLogin {
         try {
             ListResult result = facade.listGames(authToken);
             System.out.println("Games:");
-            System.out.println(result.games());
             gameList = result.games();
+            printGames();
         } catch (ResponseException e) {
             System.out.println(e.getMessage());
         }
@@ -116,8 +116,7 @@ public class PostLogin {
                 ListResult result = facade.listGames(authToken);
                 gameList = result.games();
             }
-            for (int i = 0; i < gameList.size(); i++){
-                GameData current = gameList.get(i);
+            for (GameData current : gameList) {
                 if (current.gameID() == gameID) {
                     game = current;
                 }
@@ -127,5 +126,18 @@ public class PostLogin {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    private void printGames(){
+        for (GameData current : gameList) {
+            System.out.println("Game ID: ");
+            System.out.println(current.gameID());
+            System.out.println("\nTitle: ");
+            System.out.println(current.gameName());
+            System.out.println("\nWhite User: ");
+            System.out.println(current.whiteUsername());
+            System.out.println("\nBlack User: ");
+            System.out.println(current.blackUsername());
+        }
     }
 }
