@@ -79,7 +79,7 @@ public class BoardPrinter {
             out.print(RESET_BG_COLOR);
             out.print("\n");
             printEdge(i, out);
-            printRow(out, i, game, bgColorOne, bgColorTWO);
+            printRowBlack(out, i, game, bgColorOne, bgColorTWO);
             printEdge(i, out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
@@ -151,6 +151,21 @@ public class BoardPrinter {
             out.print(EMPTY);
             out.print(color2);
             String pieceSecond = getPiece(game.board.getPiece(new ChessPosition(row, i+1)), out);
+            out.print(EMPTY);
+            out.print(pieceSecond);
+            out.print(EMPTY);
+        }
+    }
+
+    private static void printRowBlack(PrintStream out, int row, ChessGame game, String color1, String color2){
+        for (int i=8; i > 0; i-=2){
+            out.print(color1);
+            String piece = getPiece(game.board.getPiece(new ChessPosition(row, i)), out);
+            out.print(EMPTY);
+            out.print(piece);
+            out.print(EMPTY);
+            out.print(color2);
+            String pieceSecond = getPiece(game.board.getPiece(new ChessPosition(row, i-1)), out);
             out.print(EMPTY);
             out.print(pieceSecond);
             out.print(EMPTY);

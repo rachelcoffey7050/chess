@@ -104,8 +104,11 @@ public class PostLogin {
             ChessGame.TeamColor color;
             if (Objects.equals(colorString, "W") || Objects.equals(colorString, "w")) {
                 color = ChessGame.TeamColor.WHITE;
-            } else {
+            } else if (Objects.equals(colorString, "B") || Objects.equals(colorString, "b")) {
                 color = ChessGame.TeamColor.BLACK;
+            } else {
+                System.out.println("Please rejoin game and type w or b");
+                return;
             }
             JoinRequest request = new JoinRequest(color, gameID, authToken);
             facade.joinGame(request, authToken);
