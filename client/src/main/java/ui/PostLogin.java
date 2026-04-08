@@ -116,7 +116,7 @@ public class PostLogin {
             if (game==null){
                 System.out.println("Game does not exist");
             }
-            GamePlay gameUi = new GamePlay(facade, new BoardPrinter(game, color));
+            GamePlay gameUi = new GamePlay(facade, new BoardPrinter(game, color), game, color);
             gameUi.runGamePlay();
         } catch (ResponseException e){
             System.out.println(e.getMessage());
@@ -136,7 +136,7 @@ public class PostLogin {
             System.out.println("Game does not exist");
             return;
         }
-        GamePlay gameUi = new GamePlay(facade, new BoardPrinter(game, ChessGame.TeamColor.WHITE));
+        GamePlay gameUi = new GamePlay(facade, new BoardPrinter(game, ChessGame.TeamColor.WHITE), game, null);
         gameUi.runGamePlay();
     }
 
