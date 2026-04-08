@@ -16,23 +16,34 @@ public class GamePlay {
 
     public void runGamePlay(){
         Scanner sc = new Scanner(System.in);
+        boolean playing = true;
+        printer.printBoard();
 
-        if (!sc.hasNextInt()) {
-            System.out.println("Invalid input: Please type a number");
-            sc.nextLine();
-            return;
-        }
+        while (playing) {
+            if (!sc.hasNextInt()) {
+                System.out.println("Invalid input: Please type a number");
+                sc.nextLine();
+                return;
+            }
 
-        int n = sc.nextInt();
+            int n = sc.nextInt();
 
-        if (n == 1) {help();}
-        else if (n == 2) {redrawChessBoard();}
-        else if (n==3) {leave();}
-        else if (n == 4) {makeMove();}
-        else if (n == 5) {resign();}
-        else if (n == 6) {highlight();}
-        else {
-            System.out.println("Invalid Input");
+            if (n == 1) {
+                help();
+            } else if (n == 2) {
+                redrawChessBoard();
+            } else if (n == 3) {
+                leave();
+                playing = false;
+            } else if (n == 4) {
+                makeMove();
+            } else if (n == 5) {
+                resign();
+            } else if (n == 6) {
+                highlight();
+            } else {
+                System.out.println("Invalid Input");
+            }
         }
     }
 
@@ -42,7 +53,6 @@ public class GamePlay {
 
     private void leave(){
         System.out.println("Leaving Chess Game");
-        // go back to post Login
     }
 
     private void redrawChessBoard(){
