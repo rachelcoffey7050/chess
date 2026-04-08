@@ -60,9 +60,35 @@ public class GamePlay {
     }
 
     private void makeMove(){
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Row of Chess Piece to move (1-8):");
+        int row = getInt(sc);
+        if (row == 0){return;}
+        System.out.println("Column of Chess Piece to move (1-8):");
+        int col = getInt(sc);
+        if (col == 0){return;}
+
+        System.out.println("Row of Destination (1-8):");
+        int rowDes = getInt(sc);
+        if (rowDes == 0){return;}
+        System.out.println("Column of Destination (1-8):");
+        int colDes = getInt(sc);
+        if (colDes == 0){return;}
+
         // make move with websocket?
         printer.printBoard();
     }
+
+    private int getInt(Scanner sc){
+        if (!sc.hasNextInt() || sc.nextInt()>8 || sc.nextInt()<1) {
+            System.out.println("Invalid input: Please type a number 1-8");
+            sc.nextLine();
+            return 0;
+        }
+        return sc.nextInt();
+    }
+
      private void resign(){
          System.out.println("Game Over: Forfeited");
          // websocket ends game?
