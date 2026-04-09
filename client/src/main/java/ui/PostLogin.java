@@ -121,7 +121,7 @@ public class PostLogin {
                 JoinRequest request = new JoinRequest(color, gameID, authToken);
                 facade.joinGame(request, authToken);
             }
-            GamePlay gameUi = new GamePlay(facade, new BoardPrinter(game, color), game, color);
+            GamePlay gameUi = new GamePlay(facade, new BoardPrinter(game, color), game, color, authToken);
             gameUi.runGamePlay();
         } catch (ResponseException e){
             System.out.println(e.getMessage());
@@ -156,7 +156,8 @@ public class PostLogin {
             System.out.println("Game does not exist");
             return;
         }
-        GamePlay gameUi = new GamePlay(facade, new BoardPrinter(game, ChessGame.TeamColor.WHITE), game, null);
+        GamePlay gameUi = new GamePlay(facade, new BoardPrinter(game, ChessGame.TeamColor.WHITE),
+                game, null, authToken);
         gameUi.runGamePlay();
     }
 

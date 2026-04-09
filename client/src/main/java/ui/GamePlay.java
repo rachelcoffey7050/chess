@@ -6,6 +6,10 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 import client.ServerFacade;
 import model.GameData;
+import websocket.NotificationHandler;
+import websocket.WebSocketFacade;
+import websocket.WebSocketFacade.*;
+import websocket.messages.ServerMessage;
 
 import java.util.Scanner;
 
@@ -15,16 +19,31 @@ public class GamePlay {
     private final BoardPrinter printer;
     private ChessGame game;
     private ChessGame.TeamColor color;
+    private String authToken;
+    private int gameID;
 
-    public GamePlay(ServerFacade facade, BoardPrinter printer, GameData game, ChessGame.TeamColor color){
+    public GamePlay(ServerFacade facade, BoardPrinter printer, GameData game,
+                    ChessGame.TeamColor color, String authToken){
         this.facade = facade;
         this.printer = printer;
         this.game = game.game();
         this.color = color;
+        this.authToken = authToken;
+        this.gameID = game.gameID();
     }
 
     public void runGamePlay(){
+
         Scanner sc = new Scanner(System.in);
+        WebSocketFacade webSocketFacade = new WebSocketFacade(facade.serverUrl, notification -> {
+            switch (notification.getServerMessageType()) {
+                case LOAD_GAME -> printer.printBoard();
+                case NOTIFICATION -> System.out.println(notification.getMessage());
+                case ERROR -> System.out.println(notification.getMessage());
+            }});
+            webSocketFacade.connect(authToken,gameID);
+
+
         boolean playing = true;
         printer.printBoard();
 
@@ -42,12 +61,12 @@ public class GamePlay {
             } else if (n == 2) {
                 redrawChessBoard();
             } else if (n == 3) {
-                leave();
+                leave(webSocketFacade);
                 playing = false;
             } else if (n == 4) {
-                makeMove();
+                makeMove(webSocketFacade);
             } else if (n == 5) {
-                resign();
+                resign(webSocketFacade);
             } else if (n == 6) {
                 highlight();
             } else {
@@ -60,7 +79,8 @@ public class GamePlay {
         System.out.println("Menu:\n1. Help\n2. Redraw Chess Board\n3. Leave\n4. Make Move\n5. Resign\n6. Highlight Legal Moves ");
     }
 
-    private void leave(){
+    private void leave(WebSocketFacade websocket){
+        websocket.leave(authToken, gameID);
         System.out.println("Leaving Chess Game");
     }
 
@@ -68,7 +88,7 @@ public class GamePlay {
         printer.printBoard();
     }
 
-    private void makeMove(){
+    private void makeMove(WebSocketFacade websocket){
         if (color == null){
             System.out.println("You are an observer, you cannot make moves");
             return;
@@ -108,7 +128,7 @@ public class GamePlay {
             System.out.println("Error: Invalid Move");
             return;
         }
-
+        websocket.makeMove(authToken, gameID);
         // make move with websocket?
         printer.printBoard();
     }
@@ -146,8 +166,9 @@ public class GamePlay {
         return null;
     }
 
-     private void resign(){
-         System.out.println("Game Over: Forfeited");
+     private void resign(WebSocketFacade websocket){
+        websocket.resign(authToken, gameID);
+        System.out.println("Game Over: Forfeited");
          // websocket ends game?
      }
 
