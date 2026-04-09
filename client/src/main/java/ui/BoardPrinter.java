@@ -1,12 +1,15 @@
 package ui;
 
 import chess.ChessGame;
+import chess.ChessMove;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import model.GameData;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static chess.ChessPiece.PieceType.*;
 import static ui.EscapeSequences.*;
@@ -16,7 +19,6 @@ public class BoardPrinter {
     private final GameData game;
     private final ChessGame.TeamColor color;
     private static final int BOARD_SIZE_IN_SQUARES = 8;
-    private static final int SQUARE_SIZE_IN_PADDED_CHARS = 3;
 
     public BoardPrinter(GameData game, ChessGame.TeamColor color){
         this.game = game;
@@ -30,6 +32,26 @@ public class BoardPrinter {
         assert game != null;
         ChessGame game1 = game.game();
 
+        mainPrint(game1, null);
+    }
+
+    public void highlightPrint(ChessPosition position){
+        if (game == null){
+            System.out.println("Could not print board: game was null");
+        }
+        assert game != null;
+        ChessGame game1 = game.game();
+        Collection<ChessMove> validMoves = game1.validMoves(position);
+        ArrayList<ChessPosition> positions = new ArrayList<ChessPosition>();
+        for (ChessMove move : validMoves){
+            positions.add(move.getEndPosition());
+        }
+        mainPrint(game1, positions);
+    }
+
+    public void mainPrint(ChessGame game, Collection<ChessPosition> validMoves){
+
+
         var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         out.print(ERASE_SCREEN);
 
@@ -37,15 +59,15 @@ public class BoardPrinter {
         if (color== ChessGame.TeamColor.BLACK){
             header = EMPTY + "h" + EMPTY  + EMPTY + "g" + EMPTY + EMPTY + "f" + EMPTY + EMPTY + "e" + EMPTY + EMPTY
                     + "d" + EMPTY + EMPTY + "c" + EMPTY + EMPTY + "b" + EMPTY + EMPTY + "a" + EMPTY;
-            drawTopAndBottom(out, game1, header);
-            drawBlackBoard(out, game1);
-            drawTopAndBottom(out, game1, header);
+            drawTopAndBottom(out, game, header);
+            drawBlackBoard(out, game, validMoves);
+            drawTopAndBottom(out, game, header);
         } else {
             header = EMPTY + "a" + EMPTY  + EMPTY + "b" + EMPTY + EMPTY + "c" + EMPTY + EMPTY + "d" + EMPTY + EMPTY
                     + "e" + EMPTY + EMPTY + "f" + EMPTY + EMPTY + "g" + EMPTY + EMPTY + "h" + EMPTY;
-            drawTopAndBottom(out, game1, header);
-            drawWhiteBoard(out, game1);
-            drawTopAndBottom(out, game1, header);
+            drawTopAndBottom(out, game, header);
+            drawWhiteBoard(out, game, validMoves);
+            drawTopAndBottom(out, game, header);
         }
         out.print(RESET_BG_COLOR);
         out.print(RESET_TEXT_COLOR);
@@ -62,7 +84,7 @@ public class BoardPrinter {
         out.print("\n");
     }
 
-    private static void drawBlackBoard(PrintStream out, ChessGame game){
+    private static void drawBlackBoard(PrintStream out, ChessGame game, Collection<ChessPosition> validMoves){
         for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i++){
             String bgColorOne;
             String bgColorTWO;
@@ -74,17 +96,17 @@ public class BoardPrinter {
                 bgColorTWO = BG_DARK_BROWN;
             }
             printBlankEdge(out);
-            printBlankRow(out, bgColorOne, bgColorTWO);
+            printBlankRow(out, bgColorOne, bgColorTWO, validMoves, i);
             printBlankEdge(out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
             printEdge(i, out);
-            printRowBlack(out, i, game, bgColorOne, bgColorTWO);
+            printRowBlack(out, i, game, bgColorOne, bgColorTWO, validMoves);
             printEdge(i, out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
             printBlankEdge(out);
-            printBlankRow(out, bgColorOne, bgColorTWO);
+            printBlankRow(out, bgColorOne, bgColorTWO, validMoves, i);
             printBlankEdge(out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
@@ -99,20 +121,31 @@ public class BoardPrinter {
         out.print(EMPTY);
     }
 
-    private static void printBlankRow(PrintStream out, String color1, String color2){
+    private static void printBlankRow(PrintStream out, String color1, String color2,
+                                      Collection<ChessPosition> validMoves, int row){
         for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i+=2){
             out.print(color1);
+            if (validMoves != null) {checkIfValid(validMoves, new ChessPosition(row, i), out);}
             out.print(EMPTY);
             out.print(" ");
             out.print(EMPTY);
             out.print(color2);
+            if (validMoves != null) {checkIfValid(validMoves, new ChessPosition(row, i+1), out);}
             out.print(EMPTY);
             out.print(" ");
             out.print(EMPTY);
         }
     }
 
-    private static void drawWhiteBoard(PrintStream out, ChessGame game){
+    private static void checkIfValid(Collection<ChessPosition> positions, ChessPosition current, PrintStream out){
+        if (positions.contains(current)){
+            out.print(SET_BG_COLOR_GREEN);
+            return;
+        }
+        return;
+    }
+
+    private static void drawWhiteBoard(PrintStream out, ChessGame game, Collection<ChessPosition> validMoves){
         for (int i=8; i > 0; i--){
             String bgColor1;
             String bgColor2;
@@ -125,31 +158,34 @@ public class BoardPrinter {
             }
 
             printBlankEdge(out);
-            printBlankRow(out, bgColor1, bgColor2);
+            printBlankRow(out, bgColor1, bgColor2, validMoves, i);
             printBlankEdge(out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
             printEdge(i, out);
-            printRow(out, i, game, bgColor1, bgColor2);
+            printRow(out, i, game, bgColor1, bgColor2, validMoves);
             printEdge(i, out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
             printBlankEdge(out);
-            printBlankRow(out, bgColor1, bgColor2);
+            printBlankRow(out, bgColor1, bgColor2, validMoves, i);
             printBlankEdge(out);
             out.print(RESET_BG_COLOR);
             out.print("\n");
         }
     }
 
-    private static void printRow(PrintStream out, int row, ChessGame game, String color1, String color2){
+    private static void printRow(PrintStream out, int row, ChessGame game, String color1, String color2,
+                                 Collection<ChessPosition> validMoves){
         for (int i=1; i <= BOARD_SIZE_IN_SQUARES; i+=2){
             out.print(color1);
+            if (validMoves != null) {checkIfValid(validMoves, new ChessPosition(row, i), out);}
             String piece = getPiece(game.board.getPiece(new ChessPosition(row, i)), out);
             out.print(EMPTY);
             out.print(piece);
             out.print(EMPTY);
             out.print(color2);
+            if (validMoves != null) {checkIfValid(validMoves, new ChessPosition(row, i+1), out);}
             String pieceSecond = getPiece(game.board.getPiece(new ChessPosition(row, i+1)), out);
             out.print(EMPTY);
             out.print(pieceSecond);
@@ -157,14 +193,17 @@ public class BoardPrinter {
         }
     }
 
-    private static void printRowBlack(PrintStream out, int row, ChessGame game, String color1, String color2){
+    private static void printRowBlack(PrintStream out, int row, ChessGame game, String color1, String color2,
+                                      Collection<ChessPosition> validMoves){
         for (int i=8; i > 0; i-=2){
             out.print(color1);
+            if (validMoves != null) {checkIfValid(validMoves, new ChessPosition(row, i), out);}
             String piece = getPiece(game.board.getPiece(new ChessPosition(row, i)), out);
             out.print(EMPTY);
             out.print(piece);
             out.print(EMPTY);
             out.print(color2);
+            if (validMoves != null) {checkIfValid(validMoves, new ChessPosition(row, i+1), out);}
             String pieceSecond = getPiece(game.board.getPiece(new ChessPosition(row, i-1)), out);
             out.print(EMPTY);
             out.print(pieceSecond);

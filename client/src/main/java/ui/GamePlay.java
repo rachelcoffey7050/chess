@@ -152,6 +152,13 @@ public class GamePlay {
      }
 
      private void highlight(){
-        //get list of legal moves from chess game and print them out
+         Scanner sc = new Scanner(System.in);
+         System.out.println("Row of Chess Piece to check (1-8):");
+         int row = getInt(sc);
+         if (row == 0){return;}
+         System.out.println("Column of Chess Piece to check (1-8):");
+         int col = getInt(sc);
+         if (col == 0){return;}
+         printer.highlightPrint(new ChessPosition(row, col));
      }
 }
