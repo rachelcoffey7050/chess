@@ -18,12 +18,14 @@ public class PostLogin {
     private ServerFacade facade;
     public String authToken;
     private List<GameData> gameList = new ArrayList<>();
+    private String username;
 
 
-    public PostLogin(ServerFacade facade, String authToken){
+    public PostLogin(ServerFacade facade, String authToken, String username){
         this.facade = facade;
         this.authToken = authToken;
         this.gameList = null;
+        this.username = username;
     }
 
     public void runPostLogin(){
@@ -110,11 +112,14 @@ public class PostLogin {
                 System.out.println("Please rejoin game and type w or b");
                 return;
             }
-            JoinRequest request = new JoinRequest(color, gameID, authToken);
-            facade.joinGame(request, authToken);
             GameData game = getCorrectGame(gameID);
             if (game==null){
                 System.out.println("Game does not exist");
+                return;
+            }
+            if (!checkAlreadyIn(color, game)) {
+                JoinRequest request = new JoinRequest(color, gameID, authToken);
+                facade.joinGame(request, authToken);
             }
             GamePlay gameUi = new GamePlay(facade, new BoardPrinter(game, color), game, color);
             gameUi.runGamePlay();
@@ -122,6 +127,21 @@ public class PostLogin {
             System.out.println(e.getMessage());
         }
     }
+
+    private boolean checkAlreadyIn(ChessGame.TeamColor color, GameData game){
+        if (color== ChessGame.TeamColor.WHITE){
+            if (Objects.equals(game.whiteUsername(), username)){
+                return true;
+            }
+        }
+        if (color== ChessGame.TeamColor.BLACK){
+            if (Objects.equals(game.blackUsername(), username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void observe() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Game Number:");

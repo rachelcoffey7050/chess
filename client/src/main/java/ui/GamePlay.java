@@ -114,12 +114,18 @@ public class GamePlay {
     }
 
     private int getInt(Scanner sc){
-        if (!sc.hasNextInt() || sc.nextInt()>8 || sc.nextInt()<1) {
-            System.out.println("Invalid input: Please type a number 1-8");
+        if (!sc.hasNextInt()) {
+            System.out.println("Invalid input: Please type a number");
             sc.nextLine();
             return 0;
         }
-        return sc.nextInt();
+        int int1 = sc.nextInt();
+        if (int1>8 || int1<1){
+            System.out.println("Invalid input: Number must be between 1 and 8");
+            sc.nextLine();
+            return 0;
+        }
+        return int1;
     }
 
     private ChessPiece.PieceType getPromotionPiece(Scanner sc){

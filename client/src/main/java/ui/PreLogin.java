@@ -13,7 +13,7 @@ public class PreLogin {
 
     private final ServerFacade facade;
     public String authToken;
-    public Boolean run;
+    public String username;
 
     public PreLogin(ServerFacade facade, String authToken){
         this.facade = facade;
@@ -54,6 +54,7 @@ public class PreLogin {
             Scanner sc = new Scanner(System.in);
             System.out.println("Username:");
             String username = sc.nextLine();
+            this.username = username;
             System.out.println("Password:");
             String password = sc.nextLine();
             LoginResult result = facade.login(new LoginRequest(username, password), authToken);
@@ -69,6 +70,7 @@ public class PreLogin {
             Scanner sc = new Scanner(System.in);
             System.out.println("Username:");
             String username = sc.nextLine();
+            this.username = username;
             System.out.println("Password:");
             String password = sc.nextLine();
             System.out.println("Email:");
