@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class GamePlay {
 
     private final ServerFacade facade;
-    private final BoardPrinter printer;
+    private BoardPrinter printer;
     private ChessGame game;
     private final ChessGame.TeamColor color;
     private final String authToken;
@@ -36,6 +36,7 @@ public class GamePlay {
                 case LOAD_GAME -> { try {
                     GameData updated = notification.getGame();
                     this.game = updated.game();
+                    this.printer = new BoardPrinter(updated, color);
                     printer.printBoard();
                 } catch (Exception e) {
                     System.out.println("Error updating game: " + e.getMessage());
