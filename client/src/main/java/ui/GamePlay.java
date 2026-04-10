@@ -1,15 +1,11 @@
 package ui;
 
-import chess.ChessGame;
-import chess.ChessMove;
-import chess.ChessPiece;
-import chess.ChessPosition;
+import chess.*;
+import chess.exceptions.ResponseException;
 import client.ServerFacade;
 import model.GameData;
-import websocket.NotificationHandler;
 import websocket.WebSocketFacade;
 import websocket.WebSocketFacade.*;
-import websocket.messages.ServerMessage;
 
 import java.util.Scanner;
 
@@ -18,9 +14,9 @@ public class GamePlay {
     private final ServerFacade facade;
     private final BoardPrinter printer;
     private ChessGame game;
-    private ChessGame.TeamColor color;
-    private String authToken;
-    private int gameID;
+    private final ChessGame.TeamColor color;
+    private final String authToken;
+    private final int gameID;
 
     public GamePlay(ServerFacade facade, BoardPrinter printer, GameData game,
                     ChessGame.TeamColor color, String authToken){
@@ -37,7 +33,13 @@ public class GamePlay {
         Scanner sc = new Scanner(System.in);
         WebSocketFacade webSocketFacade = new WebSocketFacade(facade.serverUrl, notification -> {
             switch (notification.getServerMessageType()) {
-                case LOAD_GAME -> printer.printBoard();
+                case LOAD_GAME -> { try {
+                    GameData updated = notification.getGame();
+                    this.game = updated.game();
+                    printer.printBoard();
+                } catch (Exception e) {
+                    System.out.println("Error updating game: " + e.getMessage());
+                } }
                 case NOTIFICATION -> System.out.println(notification.getMessage());
                 case ERROR -> System.out.println(notification.getMessage());
             }});
@@ -121,15 +123,14 @@ public class GamePlay {
             System.out.println("Promotion Piece:");
             promotion = getPromotionPiece(sc);
         }
-
+        ChessMove newMove = new ChessMove(initial, new ChessPosition(rowDes, colDes), promotion);
+        websocket.makeMove(authToken, gameID, newMove);
         try {
-            game.makeMove(new ChessMove(initial, new ChessPosition(rowDes, colDes), promotion));
+            game.makeMove(newMove);
         } catch (Exception e) {
-            System.out.println("Error: Invalid Move");
+            System.out.println("Invalid Move.");
             return;
         }
-        websocket.makeMove(authToken, gameID);
-        // make move with websocket?
         printer.printBoard();
     }
 

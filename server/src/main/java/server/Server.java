@@ -1,15 +1,18 @@
 package server;
 
 import chess.ChessGame;
+import chess.exceptions.ResponseException;
 import chess.requestandresult.*;
+import com.google.gson.Gson;
 import dataaccess.*;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import com.google.gson.Gson;
+import server.websocket.WebSocketHandler;
 import service.*;
-import chess.exceptions.ResponseException;
 
 import java.util.Map;
+
+import static io.javalin.apibuilder.ApiBuilder.ws;
 
 public class Server {
 
@@ -31,6 +34,8 @@ public class Server {
             return;
         }
 
+        WebSocketHandler wsHandler = new WebSocketHandler(gameDAO);
+
         javalin.post("/user", this::registerHandler);
         javalin.delete("/db", this::deleteHandler);
         javalin.post("/session", this::loginHandler);
@@ -40,7 +45,11 @@ public class Server {
         javalin.post("/game", this::createGameHandler);
         javalin.put("/game", this::joinGameHandler);
         javalin.get("/game", this::listHandler);
-
+        javalin.ws("/ws", ws -> {
+            ws.onConnect(wsHandler);
+            ws.onMessage(wsHandler);
+            ws.onClose(wsHandler);
+        });
 
     }
 
