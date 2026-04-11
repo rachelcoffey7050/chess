@@ -1,7 +1,6 @@
 package server.websocket;
 
 import chess.ChessMove;
-import chess.ChessPiece;
 import com.google.gson.Gson;
 import chess.exceptions.ResponseException;
 import dataaccess.GameDAO;
@@ -11,7 +10,6 @@ import io.javalin.websocket.WsConnectContext;
 import io.javalin.websocket.WsConnectHandler;
 import io.javalin.websocket.WsMessageContext;
 import io.javalin.websocket.WsMessageHandler;
-import jakarta.websocket.server.ServerEndpoint;
 import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
 import websocket.commands.UserGameCommand;
@@ -19,7 +17,6 @@ import websocket.messages.ServerMessage;
 
 import java.io.IOException;
 
-@ServerEndpoint("/ws")
 public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsCloseHandler {
 
     private final ConnectionManager connections = new ConnectionManager();
@@ -39,6 +36,7 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
     @Override
     public void handleMessage(WsMessageContext ctx) {
         try {
+            System.out.println("Websocket message sent");
             UserGameCommand action = new Gson().fromJson(ctx.message(), UserGameCommand.class);
             switch (action.getCommandType()) {
                 case CONNECT -> connect(action.getAuthToken(), action.getGameID(), ctx.session);
@@ -48,6 +46,8 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (ResponseException e) {
+            System.out.println("Invalid Move");
         }
     }
 
@@ -57,23 +57,29 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
     }
 
     private void connect(String user, int gameID, Session session) throws IOException {
-        connections.add(gameID, session);
-        var message = String.format("%s is connected", user);
-        var notification = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME, message);
-        connections.broadcast(session, notification, gameID);
+        try {
+            GameData game = gameDAO.findGame(gameID);
+            connections.add(gameID, session);
+            var loadGame = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME, null, game);
+            var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, "user joined");
+            connections.broadcastToOther(gameID, session, notification);
+            connections.broadcast(gameID, session, loadGame);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void leave(String user, int gameID, Session session) throws IOException {
         var message = String.format("%s left the game %s", user, gameID);
         var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, message);
-        connections.broadcast(session, notification, gameID);
+        connections.broadcast(gameID, session, notification);
         connections.remove(session, gameID);
     }
 
     private void resign(String user, int gameID, Session session) throws IOException {
         var message = String.format("%s forfeited the game %s", user, gameID);
         var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, message);
-        connections.broadcast(session, notification, gameID);
+        connections.broadcast(gameID, session, notification);
     }
 
     public void makeMove(String user, int gameID, ChessMove move, Session session) throws ResponseException {
@@ -82,8 +88,9 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             game.game().makeMove(move);
             gameDAO.updateGame(game);
             var message = String.format("%s made a move in game %s", user, gameID);
-            var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, message, game);
-            connections.broadcast(session, notification, gameID);
+            System.out.println("Received message: " + message);
+            var notification = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME, message, game);
+            connections.broadcast(gameID, session, notification);
         } catch (Exception ex) {
             throw new ResponseException(ResponseException.Code.ServerError, ex.getMessage());
         }

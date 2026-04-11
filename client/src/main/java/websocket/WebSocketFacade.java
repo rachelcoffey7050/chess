@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 
 
 import jakarta.websocket.*;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import websocket.commands.UserGameCommand;
 import chess.exceptions.ResponseException;
 import websocket.messages.ServerMessage;
@@ -28,7 +27,6 @@ public class WebSocketFacade extends Endpoint {
 
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, socketURI);
-            System.out.println("Session open? " + session.isOpen());
             //set message handler
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
                 @Override
@@ -45,9 +43,10 @@ public class WebSocketFacade extends Endpoint {
     //Endpoint requires this method, but you don't have to do anything
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
+        this.session = session;
+        System.out.println("Connected to server");
     }
 
-    @OnWebSocketClose
     public void onClose(Session session, int statusCode, String reason) {
         System.out.println("Closed: " + reason);
     }
@@ -91,8 +90,5 @@ public class WebSocketFacade extends Endpoint {
             throw new ResponseException(ResponseException.Code.ServerError, ex.getMessage());
         }
     }
-
-
-
 }
 
