@@ -27,6 +27,7 @@ public class WebSocketFacade extends Endpoint {
 
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, socketURI);
+            System.out.println("WEBSOCKET FACADE CREATED: " + this);
             //set message handler
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
                 @Override
@@ -63,6 +64,7 @@ public class WebSocketFacade extends Endpoint {
 
     public void makeMove(String authToken, int gameID, ChessMove move) throws ResponseException {
         try {
+            System.out.println("CLIENT SENDING MAKE_MOVE");
             var action = new UserGameCommand(UserGameCommand.CommandType.MAKE_MOVE, authToken, gameID, move);
             this.session.getBasicRemote().sendText(new Gson().toJson(action));
         } catch (IOException ex) {

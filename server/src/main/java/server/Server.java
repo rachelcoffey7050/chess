@@ -34,7 +34,7 @@ public class Server {
             return;
         }
 
-        WebSocketHandler wsHandler = new WebSocketHandler(gameDAO);
+        WebSocketHandler wsHandler = new WebSocketHandler(gameDAO, authDAO);
 
         javalin.post("/user", this::registerHandler);
         javalin.delete("/db", this::deleteHandler);

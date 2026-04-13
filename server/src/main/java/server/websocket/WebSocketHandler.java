@@ -3,6 +3,7 @@ package server.websocket;
 import chess.ChessMove;
 import com.google.gson.Gson;
 import chess.exceptions.ResponseException;
+import dataaccess.AuthDAO;
 import dataaccess.GameDAO;
 import io.javalin.websocket.WsCloseContext;
 import io.javalin.websocket.WsCloseHandler;
@@ -10,6 +11,7 @@ import io.javalin.websocket.WsConnectContext;
 import io.javalin.websocket.WsConnectHandler;
 import io.javalin.websocket.WsMessageContext;
 import io.javalin.websocket.WsMessageHandler;
+import model.AuthData;
 import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
 import websocket.commands.UserGameCommand;
@@ -21,10 +23,12 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
 
     private final ConnectionManager connections = new ConnectionManager();
     private final GameDAO gameDAO;
+    private final AuthDAO authDAO;
 
 
-    public WebSocketHandler(GameDAO gameDAO){
+    public WebSocketHandler(GameDAO gameDAO, AuthDAO authDAO){
         this.gameDAO = gameDAO;
+        this.authDAO = authDAO;
     }
 
     @Override
@@ -36,6 +40,7 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
     @Override
     public void handleMessage(WsMessageContext ctx) {
         try {
+            System.out.println("RAW MESSAGE: " + ctx.message());   // <‑‑ ADD THIS
             System.out.println("Websocket message sent");
             UserGameCommand action = new Gson().fromJson(ctx.message(), UserGameCommand.class);
             switch (action.getCommandType()) {
@@ -59,9 +64,16 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
     private void connect(String user, int gameID, Session session) throws IOException {
         try {
             GameData game = gameDAO.findGame(gameID);
+            AuthData auth = authDAO.findAuth(user);
+            if (auth == null || game == null){
+                var error = new ServerMessage(ServerMessage.ServerMessageType.ERROR,
+                        "Error: invalid game ID", true);
+                connections.broadcast(gameID, session, error);
+                return;
+            }
             connections.add(gameID, session);
             var loadGame = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME, null, game);
-            var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, "user joined");
+            var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION, String.format("%s joined", auth));
             connections.broadcastToOther(gameID, session, notification);
             connections.broadcast(gameID, session, loadGame);
         } catch (Exception e) {
@@ -87,10 +99,9 @@ public class WebSocketHandler implements WsConnectHandler, WsMessageHandler, WsC
             GameData game = gameDAO.findGame(gameID);
             game.game().makeMove(move);
             gameDAO.updateGame(game);
-            var message = String.format("%s made a move in game %s", user, gameID);
-            System.out.println("Received message: " + message);
-            var notification = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME, message, game);
+            var notification = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME, "game loaded", game);
             connections.broadcast(gameID, session, notification);
+            connections.broadcastToOther(gameID, session, notification);
         } catch (Exception ex) {
             throw new ResponseException(ResponseException.Code.ServerError, ex.getMessage());
         }

@@ -25,8 +25,9 @@ public class ConnectionManager {
     }
 
     public void broadcastToOther(int gameID, Session excludeSession, ServerMessage notification) throws IOException {
+        System.out.println("Broadcasting to game " + gameID + ": " + notification.getMessage());
         if (!connections.containsKey(gameID)) {
-            return; // no one to notify
+            return;
         }
         for (Session c : connections.get(gameID)) {
             if (c.isOpen()) {
@@ -38,6 +39,7 @@ public class ConnectionManager {
     }
 
     public void broadcast(int gameID, Session session, ServerMessage notification) throws IOException {
+        System.out.println("Broadcasting to game " + gameID + ": " + notification.getMessage());
         if (session.isOpen()) {
             session.getRemote().sendString(new Gson().toJson(notification));
         }

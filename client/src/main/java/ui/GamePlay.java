@@ -48,7 +48,6 @@ public class GamePlay {
 
 
         boolean playing = true;
-        printer.printBoard();
 
         while (playing) {
             if (!sc.hasNextInt()) {
@@ -126,13 +125,6 @@ public class GamePlay {
         }
         ChessMove newMove = new ChessMove(initial, new ChessPosition(rowDes, colDes), promotion);
         websocket.makeMove(authToken, gameID, newMove);
-        try {
-            game.makeMove(newMove);
-        } catch (Exception e) {
-            System.out.println("Invalid Move.");
-            return;
-        }
-        printer.printBoard();
     }
 
     private int getInt(Scanner sc){
